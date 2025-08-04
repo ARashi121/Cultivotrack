@@ -16,8 +16,9 @@ import { Plant } from '@/lib/types';
 import Link from 'next/link';
 import { SpreadsheetUploadDialog } from '@/components/spreadsheet-upload-dialog';
 
+const allPlants = getPlants().filter(p => p.type === 'tc');
+
 export default function Home() {
-  const allPlants = useMemo(() => getPlants().filter(p => p.type === 'tc'), []);
   const [searchTerm, setSearchTerm] = useState('');
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
@@ -42,7 +43,7 @@ export default function Home() {
     }
 
     return plants;
-  }, [searchTerm, dateRange, allPlants]);
+  }, [searchTerm, dateRange]);
 
   const clearFilters = () => {
     setSearchTerm('');
