@@ -1,5 +1,7 @@
+
 "use client"
 
+import { useEffect, useState } from "react"
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis, Pie, PieChart, Cell, Legend } from "recharts"
 import { MainLayout } from "@/components/layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -8,76 +10,15 @@ import { getPlants } from "@/lib/mock-data"
 import { SubcultureEvent } from "@/lib/types"
 import { FlaskConical, Bug, TrendingUp, ShieldCheck } from "lucide-react"
 import { format, subMonths, getMonth } from "date-fns"
+import { Skeleton } from "@/components/ui/skeleton"
 
-// Calculate analytics data from mock data
-const plants = getPlants();
-const allSubcultures: (SubcultureEvent & {plantName: string})[] = [];
-plants.forEach(plant => {
-    if (plant.type === 'tc' && plant.subcultureHistory) {
-        plant.subcultureHistory.forEach(sc => {
-            // This is a rough simulation of data from the form
-            const contaminatedJars = Math.random() > 0.8 ? Math.floor(Math.random() * (sc.explantCount / 10)) : 0;
-            const jarsToHardening = Math.floor(Math.random() * (sc.explantCount / 5));
-
-            allSubcultures.push({
-                ...sc,
-                plantName: plant.name,
-                jarsUsed: sc.explantCount,
-                contaminatedJars: contaminatedJars,
-                jarsToHardening: jarsToHardening,
-            } as any)
-        });
-    }
-    if (plant.type === 'development' && plant.protocolExperiments) {
-        plant.protocolExperiments.forEach(exp => {
-            if (exp.subcultures) {
-                exp.subcultures.forEach(sc => {
-                    const contaminatedJars = Math.random() > 0.8 ? Math.floor(Math.random() * (sc.explantCount / 10)) : 0;
-                    const jarsToHardening = Math.floor(Math.random() * (sc.explantCount / 5));
-                     allSubcultures.push({
-                        ...sc,
-                        plantName: plant.name,
-                        jarsUsed: sc.explantCount,
-                        contaminatedJars: contaminatedJars,
-                        jarsToHardening: jarsToHardening,
-                    } as any)
-                })
-            }
-        })
-    }
-});
-
-
-const totalSubcultures = allSubcultures.reduce((acc, sc) => acc + (sc as any).jarsUsed, 0);
-const totalContaminated = allSubcultures.reduce((acc, sc) => acc + (sc as any).contaminatedJars, 0);
-const totalToHardening = allSubcultures.reduce((acc, sc) => acc + (sc as any).jarsToHardening, 0);
-const contaminationRate = totalSubcultures > 0 ? (totalContaminated / totalSubcultures) * 100 : 0;
-
-const monthlySubculturesData = Array.from({ length: 6 }, (_, i) => {
-    const d = subMonths(new Date(), 5 - i);
-    return { month: format(d, 'MMM'), total: 0 };
-});
-
-allSubcultures.forEach(sc => {
-    const month = getMonth(new Date(sc.date));
-    const monthStr = format(new Date(sc.date), 'MMM');
-    const monthlyData = monthlySubculturesData.find(d => d.month === monthStr);
-    if(monthlyData) {
-        monthlyData.total += (sc as any).jarsUsed;
-    }
-})
-
+// Chart configs can stay outside as they don't depend on random data
 const subcultureChartConfig = {
   total: {
     label: "Subcultures",
     color: "hsl(var(--primary))",
   },
 } satisfies ChartConfig
-
-const contaminationData = [
-    { name: 'Clean', value: totalSubcultures - totalContaminated, fill: "hsl(var(--primary))" },
-    { name: 'Contaminated', value: totalContaminated, fill: "hsl(var(--accent))"},
-];
 
 const contaminationChartConfig = {
   value: {
@@ -93,8 +34,113 @@ const contaminationChartConfig = {
   },
 } satisfies ChartConfig
 
-
 export default function AnalyticsPage() {
+  const [loading, setLoading] = useState(true);
+  const [analyticsData, setAnalyticsData] = useState<any>(null);
+
+  useEffect(() => {
+    // Calculate analytics data from mock data inside useEffect
+    const plants = getPlants();
+    const allSubcultures: (SubcultureEvent & {plantName: string})[] = [];
+    plants.forEach(plant => {
+        if (plant.type === 'tc' && plant.subcultureHistory) {
+            plant.subcultureHistory.forEach(sc => {
+                const contaminatedJars = Math.random() > 0.8 ? Math.floor(Math.random() * (sc.explantCount / 10)) : 0;
+                const jarsToHardening = Math.floor(Math.random() * (sc.explantCount / 5));
+
+                allSubcultures.push({
+                    ...sc,
+                    plantName: plant.name,
+                    jarsUsed: sc.explantCount,
+                    contaminatedJars: contaminatedJars,
+                    jarsToHardening: jarsToHardening,
+                } as any)
+            });
+        }
+        if (plant.type === 'development' && plant.protocolExperiments) {
+            plant.protocolExperiments.forEach(exp => {
+                if (exp.subcultures) {
+                    exp.subcultures.forEach(sc => {
+                        const contaminatedJars = Math.random() > 0.8 ? Math.floor(Math.random() * (sc.explantCount / 10)) : 0;
+                        const jarsToHardening = Math.floor(Math.random() * (sc.explantCount / 5));
+                         allSubcultures.push({
+                            ...sc,
+                            plantName: plant.name,
+                            jarsUsed: sc.explantCount,
+                            contaminatedJars: contaminatedJars,
+                            jarsToHardening: jarsToHardening,
+                        } as any)
+                    })
+                }
+            })
+        }
+    });
+
+    const totalSubcultures = allSubcultures.reduce((acc, sc) => acc + (sc as any).jarsUsed, 0);
+    const totalContaminated = allSubcultures.reduce((acc, sc) => acc + (sc as any).contaminatedJars, 0);
+    const totalToHardening = allSubcultures.reduce((acc, sc) => acc + (sc as any).jarsToHardening, 0);
+    const contaminationRate = totalSubcultures > 0 ? (totalContaminated / totalSubcultures) * 100 : 0;
+
+    const monthlySubculturesData = Array.from({ length: 6 }, (_, i) => {
+        const d = subMonths(new Date(), 5 - i);
+        return { month: format(d, 'MMM'), total: 0 };
+    });
+
+    allSubcultures.forEach(sc => {
+        const monthStr = format(new Date(sc.date), 'MMM');
+        const monthlyData = monthlySubculturesData.find(d => d.month === monthStr);
+        if(monthlyData) {
+            monthlyData.total += (sc as any).jarsUsed;
+        }
+    })
+
+    const contaminationData = [
+        { name: 'Clean', value: totalSubcultures - totalContaminated, fill: "hsl(var(--primary))" },
+        { name: 'Contaminated', value: totalContaminated, fill: "hsl(var(--accent))"},
+    ];
+
+    setAnalyticsData({
+      totalSubcultures,
+      totalContaminated,
+      totalToHardening,
+      contaminationRate,
+      monthlySubculturesData,
+      contaminationData
+    });
+    setLoading(false);
+  }, []);
+
+  if (loading || !analyticsData) {
+    return (
+      <MainLayout>
+        <div className="flex-1 space-y-4 p-4 sm:p-8 pt-6">
+          <h1 className="text-3xl font-bold tracking-tight font-headline">
+              Lab Analytics Dashboard
+          </h1>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              {[...Array(4)].map((_, i) => (
+                <Card key={i}>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <Skeleton className="h-4 w-3/4" />
+                  </CardHeader>
+                  <CardContent>
+                    <Skeleton className="h-8 w-1/2 mb-1" />
+                    <Skeleton className="h-3 w-1/2" />
+                  </CardContent>
+                </Card>
+              ))}
+          </div>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+              <Card className="lg:col-span-4"><CardContent className="pt-6"><Skeleton className="h-[300px] w-full" /></CardContent></Card>
+              <Card className="lg:col-span-3"><CardContent className="pt-6"><Skeleton className="h-[300px] w-full" /></CardContent></Card>
+          </div>
+        </div>
+      </MainLayout>
+    )
+  }
+
+  const { totalSubcultures, totalContaminated, totalToHardening, contaminationRate, monthlySubculturesData, contaminationData } = analyticsData;
+
   return (
     <MainLayout>
       <div className="flex-1 space-y-4 p-4 sm:p-8 pt-6">
@@ -251,3 +297,5 @@ const ChartLegendContent = (props: any) => {
     </ul>
   );
 };
+
+    
