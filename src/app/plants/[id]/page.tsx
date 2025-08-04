@@ -126,7 +126,7 @@ export default function PlantDetailPage() {
                           </DialogTrigger>
                           <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
                             <DialogHeader>
-                              <DialogTitle>Log New Subculture Event</DialogTitle>
+                              <DialogTitle>Log Subculture</DialogTitle>
                               <DialogDescription>
                                 Enter the details for the new subculture event for {plant.name}.
                               </DialogDescription>
