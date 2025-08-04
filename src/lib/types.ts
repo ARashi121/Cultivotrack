@@ -1,4 +1,4 @@
-export type PlantType = 'standard' | 'development';
+export type PlantType = 'tc' | 'development';
 
 export interface SubcultureEvent {
   id: string;

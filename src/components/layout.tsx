@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Sprout, Menu, Home, FlaskConical, BarChart3 } from 'lucide-react';
 
 const navItems = [
-  { href: '/', label: 'Standard Plants', icon: Home },
+  { href: '/', label: 'TC Plants', icon: Home },
   { href: '/protocol-development', label: 'Protocol Development', icon: FlaskConical },
   { href: '/analytics', label: 'Analytics', icon: BarChart3 },
 ];

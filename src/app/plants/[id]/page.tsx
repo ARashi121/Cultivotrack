@@ -32,7 +32,7 @@ export default function PlantDetailPage({ params }: { params: { id: string } }) 
                    />
                 </div>
                 <CardHeader>
-                    <Badge variant="outline" className="w-fit mb-2">{plant.type === 'standard' ? 'Standard Protocol' : 'Protocol Development'}</Badge>
+                    <Badge variant="outline" className="w-fit mb-2">{plant.type === 'tc' ? 'TC Plant' : 'Protocol Development'}</Badge>
                     <CardTitle className="font-headline text-4xl">{plant.name}</CardTitle>
                     <CardDescription className="italic text-lg">{plant.scientificName}</CardDescription>
                 </CardHeader>

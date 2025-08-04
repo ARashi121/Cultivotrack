@@ -7,7 +7,7 @@ const mockPlants: Plant[] = [
     scientificName: 'Nephrolepis exaltata',
     description: 'A popular and elegant fern with arching, green fronds.',
     photoUrl: 'https://placehold.co/600x400.png',
-    type: 'standard',
+    type: 'tc',
     subcultureHistory: [
       { id: 's1', date: '2024-06-01', explantCount: 50, media: 'MS Media', notes: 'Vigorous growth observed.' },
       { id: 's2', date: '2024-05-01', explantCount: 45, media: 'MS Media', notes: 'Routine subculture.' },
@@ -22,7 +22,7 @@ const mockPlants: Plant[] = [
     scientificName: 'Chlorophytum comosum',
     description: 'A resilient plant known for its air-purifying qualities.',
     photoUrl: 'https://placehold.co/600x400.png',
-    type: 'standard',
+    type: 'tc',
     subcultureHistory: [
       { id: 's3', date: '2024-06-10', explantCount: 60, media: 'B5 Media', notes: 'Healthy proliferation.' },
     ],
@@ -34,7 +34,7 @@ const mockPlants: Plant[] = [
     scientificName: 'Phalaenopsis amabilis',
     description: 'Exotic and beautiful, requiring specific care.',
     photoUrl: 'https://placehold.co/600x400.png',
-    type: 'standard',
+    type: 'tc',
     subcultureHistory: [],
     hardeningHistory: [
         { id: 'h2', date: '2024-05-20', transferredCount: 15, survivalRate: 0.85, notes: 'Acclimatizing well.' },
@@ -46,7 +46,7 @@ const mockPlants: Plant[] = [
     scientificName: 'Dionaea muscipula',
     description: 'A carnivorous plant famous for its trapping mechanism.',
     photoUrl: 'https://placehold.co/600x400.png',
-    type: 'standard',
+    type: 'tc',
     subcultureHistory: [
         { id: 's4', date: '2024-06-12', explantCount: 30, media: 'Peat-based Media', notes: 'Slower growth rate.' },
     ],
