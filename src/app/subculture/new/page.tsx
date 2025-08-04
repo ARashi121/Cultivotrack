@@ -3,6 +3,7 @@
 
 import { MainLayout } from "@/components/layout";
 import { SubcultureForm } from "@/components/subculture-form";
+import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { FilePlus2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -10,6 +11,7 @@ import { useRouter } from "next/navigation";
 export default function NewSubculturePage() {
     const { toast } = useToast();
     const router = useRouter();
+    const { user } = useAuth();
 
     const handleFormSuccess = () => {
         toast({

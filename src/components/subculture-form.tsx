@@ -27,6 +27,7 @@ import { getPlants } from "@/lib/mock-data"
 import { cn } from "@/lib/utils"
 import { CalendarIcon, Check, ChevronsUpDown, ListTodo, PlusCircle } from "lucide-react"
 import { useState } from "react"
+import { useAuth } from "@/hooks/use-auth"
 
 
 const mediaTypes = ["MS Media", "B5 Media", "White's Medium", "Nitsch & Nitsch"]
@@ -70,11 +71,13 @@ interface SubcultureFormProps {
 export function SubcultureForm({ plantId, onSuccess }: SubcultureFormProps) {
   const { toast } = useToast()
   const [useCustomMedia, setUseCustomMedia] = useState(false);
+  const { user } = useAuth();
 
   const form = useForm<SubcultureFormValues>({
     resolver: zodResolver(subcultureFormSchema),
     defaultValues: {
         plantId: plantId,
+        doneBy: user?.email || '',
         jarsUsed: 1,
         contaminatedJars: 0,
         jarsToHardening: 0,
@@ -221,7 +224,7 @@ export function SubcultureForm({ plantId, onSuccess }: SubcultureFormProps) {
                     <FormItem>
                     <FormLabel>Done By</FormLabel>
                     <FormControl>
-                        <Input placeholder="Technician's name" {...field} />
+                        <Input placeholder="Technician's name" {...field} disabled />
                     </FormControl>
                     <FormMessage />
                     </FormItem>
