@@ -15,12 +15,14 @@ import { format } from 'date-fns';
 import { Plant } from '@/lib/types';
 import Link from 'next/link';
 import { SpreadsheetUploadDialog } from '@/components/spreadsheet-upload-dialog';
+import { useAuth } from '@/hooks/use-auth';
 
 export default function Home() {
   const allPlants = useMemo(() => getPlants().filter(p => p.type === 'tc'), []);
   const [searchTerm, setSearchTerm] = useState('');
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
+  const { user } = useAuth();
 
   const filteredPlants = useMemo(() => {
     let plants = allPlants;
@@ -54,6 +56,8 @@ export default function Home() {
     // Here you would typically trigger a data refresh
     // For now, we just close the dialog.
   }
+  
+  const canEdit = user?.role === 'admin' || user?.role === 'technician';
 
   return (
     <MainLayout>
@@ -67,18 +71,20 @@ export default function Home() {
           <h1 className="text-3xl font-bold tracking-tight font-headline">
             TC Plants
           </h1>
-          <div className="flex items-center space-x-2">
-            <Button variant="outline" onClick={() => setIsUploadDialogOpen(true)}>
-                <Upload className="mr-2 h-4 w-4" />
-                Import from Sheet
-            </Button>
-            <Link href="/subculture/new">
-                <Button>
-                    <PlusCircle className="mr-2 h-4 w-4" />
-                    New Subculture
-                </Button>
-            </Link>
-          </div>
+          {canEdit && (
+            <div className="flex items-center space-x-2">
+              <Button variant="outline" onClick={() => setIsUploadDialogOpen(true)}>
+                  <Upload className="mr-2 h-4 w-4" />
+                  Import from Sheet
+              </Button>
+              <Link href="/subculture/new">
+                  <Button>
+                      <PlusCircle className="mr-2 h-4 w-4" />
+                      New Subculture
+                  </Button>
+              </Link>
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 mb-6">

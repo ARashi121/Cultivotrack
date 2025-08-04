@@ -17,6 +17,7 @@ import { Label } from "@/components/ui/label"
 import Link from 'next/link';
 import { Sprout } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -56,6 +57,14 @@ export default function LoginPage() {
                 <CardDescription>Enter your email below to login to your account.</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
+                 <Alert>
+                    <AlertTitle className='font-semibold'>Demo Credentials</AlertTitle>
+                    <AlertDescription>
+                        <p>Admin: <code className='font-mono text-sm'>admin@cultivotrack.com</code></p>
+                        <p>Technician: any other email</p>
+                        <p>Password: <code className='font-mono text-sm'>password123</code></p>
+                    </AlertDescription>
+                </Alert>
                 <div className="grid gap-2">
                     <Label htmlFor="email">Email</Label>
                     <Input id="email" type="email" placeholder="m@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} />

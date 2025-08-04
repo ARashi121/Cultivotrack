@@ -17,11 +17,12 @@ import { Label } from "@/components/ui/label"
 import Link from 'next/link';
 import { Sprout } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password, setPassword] = useState('password123');
+  const [confirmPassword, setConfirmPassword] = useState('password123');
   const { signup } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
@@ -64,6 +65,14 @@ export default function SignupPage() {
                 <CardDescription>Create your account to get started.</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
+                 <Alert>
+                    <AlertTitle className='font-semibold'>Demo Signup</AlertTitle>
+                    <AlertDescription>
+                        <p>To sign up as an admin, use the email <code className='font-mono text-sm'>admin@cultivotrack.com</code>.</p>
+                        <p>For a technician account, use any other email address.</p>
+                         <p>Default password is <code className='font-mono text-sm'>password123</code></p>
+                    </AlertDescription>
+                </Alert>
                 <div className="grid gap-2">
                     <Label htmlFor="email">Email</Label>
                     <Input id="email" type="email" placeholder="m@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} />

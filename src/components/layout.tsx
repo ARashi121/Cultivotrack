@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Sprout, Menu, Home, FlaskConical, BarChart3, Trees, User, LogOut } from 'lucide-react';
+import { Sprout, Menu, Home, FlaskConical, BarChart3, Trees, User, LogOut, Shield } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import {
   DropdownMenu,
@@ -18,10 +18,11 @@ import {
 import { useEffect } from 'react';
 
 const navItems = [
-  { href: '/', label: 'TC Plants', icon: Home },
-  { href: '/protocol-development', label: 'Protocol Development', icon: FlaskConical },
-  { href: '/hardening', label: 'Hardening', icon: Trees },
-  { href: '/analytics', label: 'Analytics', icon: BarChart3 },
+  { href: '/', label: 'TC Plants', icon: Home, roles: ['admin', 'technician', 'viewer'] },
+  { href: '/protocol-development', label: 'Protocol Development', icon: FlaskConical, roles: ['admin', 'technician', 'viewer'] },
+  { href: '/hardening', label: 'Hardening', icon: Trees, roles: ['admin', 'technician', 'viewer'] },
+  { href: '/analytics', label: 'Analytics', icon: BarChart3, roles: ['admin', 'technician', 'viewer'] },
+  { href: '/admin', label: 'Admin', icon: Shield, roles: ['admin'] },
 ];
 
 function Logo() {
@@ -33,9 +34,15 @@ function Logo() {
   );
 }
 
-function NavLink({ href, label, icon: Icon }: { href: string; label: string; icon: React.ElementType }) {
+function NavLink({ href, label, icon: Icon, userRole }: { href: string; label: string; icon: React.ElementType, userRole: string }) {
   const pathname = usePathname();
   const isActive = pathname === href;
+
+  const item = navItems.find(i => i.href === href);
+  if (!item || !item.roles.includes(userRole)) {
+    return null;
+  }
+
 
   return (
     <Link href={href}>
@@ -50,11 +57,11 @@ function NavLink({ href, label, icon: Icon }: { href: string; label: string; ico
   );
 }
 
-function SidebarNav() {
+function SidebarNav({ userRole }: { userRole: string}) {
   return (
     <nav className="flex flex-col gap-2 px-2">
       {navItems.map((item) => (
-        <NavLink key={item.href} {...item} />
+        <NavLink key={item.href} {...item} userRole={userRole} />
       ))}
     </nav>
   );
@@ -87,7 +94,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
             <Logo />
           </div>
           <div className="flex-1 py-2">
-            <SidebarNav />
+            <SidebarNav userRole={user.role} />
           </div>
         </div>
       </div>
@@ -109,7 +116,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                   <div className="flex h-14 items-center border-b mb-4">
                     <Logo />
                   </div>
-                  <SidebarNav />
+                  <SidebarNav userRole={user.role} />
                 </SheetContent>
               </Sheet>
             </div>
@@ -129,6 +136,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                         <DropdownMenuLabel>My Account</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem disabled>{user.email}</DropdownMenuItem>
+                         <DropdownMenuItem disabled className="capitalize text-xs text-muted-foreground pl-8 -mt-1">{user.role}</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={logout}>
                             <LogOut className="mr-2 h-4 w-4" />

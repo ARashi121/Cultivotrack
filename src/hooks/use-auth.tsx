@@ -3,9 +3,12 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { app } from '@/lib/firebase';
-import type { User, AuthContextType } from '@/lib/types';
+import type { User, AuthContextType, UserRole } from '@/lib/types';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+// In a real app, this would be managed in a database.
+const ADMIN_EMAIL = "admin@cultivotrack.com";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -14,12 +17,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
+      if (user && user.email) {
+        // Determine role based on email
+        const role: UserRole = user.email === ADMIN_EMAIL ? 'admin' : 'technician';
         setUser({
           uid: user.uid,
-          email: user.email!,
-          // In a real app, you'd fetch the role from your database
-          role: 'technician', 
+          email: user.email,
+          role: role,
         });
       } else {
         setUser(null);
