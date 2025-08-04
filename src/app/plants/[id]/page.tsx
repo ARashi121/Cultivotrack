@@ -86,7 +86,7 @@ export default function PlantDetailPage() {
                 <div className="relative w-full h-96">
                    <Image
                     src={plant.photoUrl}
-                    alt={`Photo of ${plant.name}`}
+                    alt={`Photo of ${plant.scientificName}`}
                     fill
                     className="object-cover"
                     data-ai-hint={`${plant.name}`}
@@ -94,8 +94,8 @@ export default function PlantDetailPage() {
                 </div>
                 <CardHeader>
                     <Badge variant="outline" className="w-fit mb-2">{plant.type === 'tc' ? 'TC Plant' : 'Protocol Development'}</Badge>
-                    <CardTitle className="font-headline text-4xl">{plant.name}</CardTitle>
-                    <CardDescription className="italic text-lg">{plant.scientificName}</CardDescription>
+                    <CardTitle className="font-headline text-4xl">{plant.scientificName}</CardTitle>
+                    <CardDescription className="italic text-lg">{plant.name}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <p>{plant.description}</p>

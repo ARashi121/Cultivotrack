@@ -16,7 +16,7 @@ export function PlantCard({ plant }: PlantCardProps) {
         <div className="relative w-full h-48">
           <Image
             src={plant.photoUrl}
-            alt={`Photo of ${plant.name}`}
+            alt={`Photo of ${plant.scientificName}`}
             fill
             className="object-cover"
             data-ai-hint={`${plant.name}`}
@@ -24,8 +24,8 @@ export function PlantCard({ plant }: PlantCardProps) {
         </div>
       </CardHeader>
       <CardContent className="p-4 flex-grow">
-        <CardTitle className="font-headline text-xl mb-1">{plant.name}</CardTitle>
-        <CardDescription className="italic text-muted-foreground mb-2">{plant.scientificName}</CardDescription>
+        <CardTitle className="font-headline text-xl mb-1">{plant.scientificName}</CardTitle>
+        <CardDescription className="italic text-muted-foreground mb-2">{plant.name}</CardDescription>
         <p className="text-sm text-foreground/80 line-clamp-3">{plant.description}</p>
       </CardContent>
       <CardFooter className="p-4 pt-0">

@@ -4,7 +4,7 @@ import { Plant, HardeningEvent } from './types';
 const mockPlants: Plant[] = [
   {
     id: '1',
-    name: 'Alternanthera reineckii \'mini\'',
+    name: 'AR Mini',
     scientificName: 'Alternanthera reineckii \'mini\'',
     description: 'A popular, colorful foreground plant that provides a vibrant red contrast to green aquatic plants.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -16,7 +16,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '2',
-    name: 'Alternanthera reineckii Rosanervig',
+    name: 'AR Rosanervig',
     scientificName: 'Alternanthera reineckii Rosanervig',
     description: 'Known for its striking pink leaves with light-colored nerves, making it a standout in any aquascape.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -27,7 +27,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '3',
-    name: 'Cryptocoryne axelrodi',
+    name: 'Axelrod\'s Water Trumpet',
     scientificName: 'Cryptocoryne axelrodi',
     description: 'A hardy and adaptable plant with narrow, ruffled leaves, suitable for a variety of water conditions.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -36,7 +36,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '4',
-    name: 'Cryptocoryne beckettii',
+    name: 'Beckett\'s Water Trumpet',
     scientificName: 'Cryptocoryne beckettii',
     description: 'A classic aquarium plant with beautiful, dark bronze-colored leaves that is easy to care for.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -47,7 +47,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '5',
-    name: 'Drosera adele',
+    name: 'Lance-leaved Sundew',
     scientificName: 'Drosera adele',
     description: 'A carnivorous plant from Australia, also known as the lance-leaved sundew, with long, elegant leaves.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -58,7 +58,7 @@ const mockPlants: Plant[] = [
   },
    {
     id: '6',
-    name: 'Drosera spatulata',
+    name: 'Spoon-leaved Sundew',
     scientificName: 'Drosera spatulata',
     description: 'A variable, rosette-forming sundew with spoon-shaped leaves, commonly found in Southeast Asia and Australia.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -67,7 +67,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '7',
-    name: 'Cryptocoryne lucens',
+    name: 'Slender Water Trumpet',
     scientificName: 'Cryptocoryne lucens',
     description: 'A small, slender-leaved Cryptocoryne that is great for foreground or midground placement in an aquarium.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -76,7 +76,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '8',
-    name: 'Cryptocoryne nurii',
+    name: 'Nur\'s Water Trumpet',
     scientificName: 'Cryptocoryne nurii',
     description: 'A beautiful and sought-after Cryptocoryne known for its patterned leaves with reddish-brown tones.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -85,7 +85,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '9',
-    name: 'Cryptocoryne spiralis \'Jwala\'',
+    name: 'Jwala Spiral Water Trumpet',
     scientificName: 'Cryptocoryne spiralis \'Jwala\'',
     description: 'A unique variety of Cryptocoryne spiralis with long, twisted leaves, creating a dynamic visual effect.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -94,7 +94,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '10',
-    name: 'Cryptocoryne wendtii \'Pink\'',
+    name: 'Pink Wendt\'s Water Trumpet',
     scientificName: 'Cryptocoryne wendtii \'Pink\'',
     description: 'A colorful variant of the popular Cryptocoryne wendtii, showcasing vibrant pink and bronze hues under good lighting.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -103,7 +103,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '11',
-    name: 'Cryptocoryne wendtii \'Sindoor\'',
+    name: 'Sindoor Wendt\'s Water Trumpet',
     scientificName: 'Cryptocoryne wendtii \'Sindoor\'',
     description: 'A newer variant with intense reddish-brown coloration, named after the traditional vermilion color.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -112,7 +112,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '12',
-    name: 'Cryptocoryne wendtii Green',
+    name: 'Green Wendt\'s Water Trumpet',
     scientificName: 'Cryptocoryne wendtii Green',
     description: 'The classic green variant of Cryptocoryne wendtii, a hardy and versatile plant suitable for beginners.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -121,7 +121,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '13',
-    name: 'Anubias barteri var. nana',
+    name: 'Dwarf Anubias',
     scientificName: 'Anubias barteri var. nana',
     description: 'A small, attractive plant with broad, deep green leaves. It is very hardy and can thrive in a variety of conditions.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -130,7 +130,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '14',
-    name: 'Anubias \'Petite\'',
+    name: 'Petite Anubias',
     scientificName: 'Anubias barteri var. nana \'Petite\'',
     description: 'A miniature version of Anubias barteri var. nana, perfect for nano tanks or as a foreground accent.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -139,7 +139,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '15',
-    name: 'Bucephalandra \'Wavy Green\'',
+    name: 'Wavy Green Buce',
     scientificName: 'Bucephalandra \'Wavy Green\'',
     description: 'A popular Bucephalandra variety with wavy, green leaves that can develop a bluish tint under optimal lighting.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -148,7 +148,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '16',
-    name: 'Hygrophila pinnatifida \'UK\'',
+    name: 'UK Pinnatifida',
     scientificName: 'Hygrophila pinnatifida \'UK\'',
     description: 'A unique stem plant with pinnately-lobed leaves that can develop a reddish-brown color under intense light.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -157,7 +157,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '17',
-    name: 'Lilaeopsis brasiliensis',
+    name: 'Brazilian Micro Sword',
     scientificName: 'Lilaeopsis brasiliensis',
     description: 'A low-growing, grass-like carpeting plant that spreads through runners to form a dense lawn.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -166,7 +166,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '18',
-    name: 'Limnophila aquatica \'Dwarf\'',
+    name: 'Dwarf Ambulia',
     scientificName: 'Limnophila aquatica \'Dwarf\'',
     description: 'A compact variety of Limnophila aquatica, featuring fine, light green leaves in a dense bush.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -175,7 +175,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '19',
-    name: 'Limnophila aromatica \'Mini\'',
+    name: 'Mini Aromatic Rotala',
     scientificName: 'Limnophila aromatica \'Mini\'',
     description: 'A smaller version of the aromatic stem plant, which can develop intense red and orange colors.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -184,7 +184,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '20',
-    name: 'Lobelia cardinalis',
+    name: 'Cardinal Plant',
     scientificName: 'Lobelia cardinalis',
     description: 'A versatile plant with vibrant green leaves that can be grown both emersed and submersed.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -193,7 +193,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '21',
-    name: 'Ludwigia repens',
+    name: 'Creeping Ludwigia',
     scientificName: 'Ludwigia repens',
     description: 'A popular, fast-growing stem plant with leaves that vary from green to deep red depending on light intensity.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -202,7 +202,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '22',
-    name: 'Micranthemum \'Monte Carlo\'',
+    name: 'Monte Carlo',
     scientificName: 'Micranthemum \'Monte Carlo\'',
     description: 'A bright green carpeting plant with small, round leaves, excellent for creating a lush foreground.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -211,7 +211,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '23',
-    name: 'Microcarpea minima merrill',
+    name: 'Merrill\'s Small-Fruited Plant',
     scientificName: 'Microcarpea minima merrill',
     description: 'A very small, delicate carpeting plant that requires good lighting and CO2 to thrive.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -220,7 +220,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '24',
-    name: 'Myriophyllum mattogrossense',
+    name: 'Red-stemmed Myrio',
     scientificName: 'Myriophyllum mattogrossense',
     description: 'A fast-growing stem plant with feathery, light green leaves, providing a fine-textured background.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -229,7 +229,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '25',
-    name: 'Pogostemon erectus',
+    name: 'Erect Pogostemon',
     scientificName: 'Pogostemon erectus',
     description: 'A beautiful stem plant with needle-like, bright green leaves that form a dense, upright bush.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -238,7 +238,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '26',
-    name: 'Pogostemon stellata',
+    name: 'Starry Pogostemon',
     scientificName: 'Pogostemon stellata',
     description: 'A demanding but rewarding plant with star-shaped leaf whorls that can display colors from green to pink and purple.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -247,7 +247,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '27',
-    name: 'Proserpinaca palustris',
+    name: 'Mermaid Weed',
     scientificName: 'Proserpinaca palustris',
     description: 'Known as Mermaid Weed, this plant has unique serrated leaves that turn a stunning orange-red under high light.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -256,7 +256,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '28',
-    name: 'Ranunculus inundatus',
+    name: 'River Buttercup',
     scientificName: 'Ranunculus inundatus',
     description: 'An interesting foreground plant with unique, deeply lobed leaves that resemble small umbrellas.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -265,7 +265,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '29',
-    name: 'Rotala macranda \'Compacta\'',
+    name: 'Compact Rotala',
     scientificName: 'Rotala macranda \'Compacta\'',
     description: 'A compact, bushy variant of Rotala macranda with vibrant red and orange leaves.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -274,7 +274,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '30',
-    name: 'Rotala macranda \'Mini Butterfly\'',
+    name: 'Mini Butterfly Rotala',
     scientificName: 'Rotala macranda \'Mini Butterfly\'',
     description: 'A smaller, delicate Rotala with narrow leaves that can show intense red coloration.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -283,7 +283,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '31',
-    name: 'Rotala macranda Mini Gold',
+    name: 'Mini Gold Rotala',
     scientificName: 'Rotala macranda Mini Gold',
     description: 'A beautiful variant with golden and pinkish hues, smaller in size than other Rotala macrandra types.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -292,7 +292,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '32',
-    name: 'Rotala rotundifolia \'Assam\'',
+    name: 'Assam Rotala',
     scientificName: 'Rotala rotundifolia \'Assam\'',
     description: 'A fast-growing Rotala variant from the Assam region, known for its bright green to reddish leaves.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -301,7 +301,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '33',
-    name: 'Rotala rotundifolia \'Blood Red\'',
+    name: 'Blood Red Rotala',
     scientificName: 'Rotala rotundifolia \'Blood Red\'',
     description: 'An intensely red variant of Rotala rotundifolia that maintains its color even in moderate light.',
     photoUrl: 'https://placehold.co/600x400.png',
@@ -310,7 +310,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '34',
-    name: "Rotala rotundifolia 'Green'",
+    name: "Green Rotala",
     scientificName: "Rotala rotundifolia 'Green'",
     description: "A popular and easy-to-grow stem plant with bright green leaves, perfect for adding a lush background to aquascapes.",
     photoUrl: 'https://placehold.co/600x400.png',
@@ -319,7 +319,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '35',
-    name: "Rotala rotundifolia HRA",
+    name: "HRA Rotala",
     scientificName: "Rotala rotundifolia HRA",
     description: "A striking Rotala variety that develops intense orange to red colors under high light, adding a vibrant splash to the aquarium.",
     photoUrl: 'https://placehold.co/600x400.png',
@@ -328,7 +328,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '36',
-    name: "Rotala sp Bangladesh",
+    name: "Bangladesh Rotala",
     scientificName: "Rotala sp Bangladesh",
     description: "A fine-leaved stem plant that grows in dense clusters, creating a beautiful, soft texture in the midground or background.",
     photoUrl: 'https://placehold.co/600x400.png',
@@ -337,7 +337,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '37',
-    name: "Rotala sp 'Ceylon'",
+    name: "Ceylon Rotala",
     scientificName: "Rotala sp 'Ceylon'",
     description: "A less common Rotala species with delicate, narrow leaves that can range from light green to pinkish hues.",
     photoUrl: 'https://placehold.co/600x400.png',
@@ -346,7 +346,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '38',
-    name: "Staurogyne portovella",
+    name: "Porto Velho Staurogyne",
     scientificName: "Staurogyne portovella",
     description: "A hardy, low-growing plant from Porto Velho, Brazil, that can form a dense, green carpet in the foreground.",
     photoUrl: 'https://placehold.co/600x400.png',
@@ -355,7 +355,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '39',
-    name: "Staurogyne repens",
+    name: "Creeping Staurogyne",
     scientificName: "Staurogyne repens",
     description: "A fresh green, compact, and hardy plant for the foreground of the aquarium and it is easy to care for.",
     photoUrl: 'https://placehold.co/600x400.png',
@@ -364,7 +364,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '40',
-    name: "Taxiphyllum 'Flame'",
+    name: "Flame Moss",
     scientificName: "Taxiphyllum 'Flame'",
     description: "A unique moss that grows in an upward, flame-like pattern, creating a dense, green fire effect.",
     photoUrl: 'https://placehold.co/600x400.png',
@@ -373,7 +373,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '41',
-    name: "Tonina fluviatilis",
+    name: "River Tonina",
     scientificName: "Tonina fluviatilis",
     description: "A challenging but beautiful plant with star-like crowns and light green leaves, often used as a focal point.",
     photoUrl: 'https://placehold.co/600x400.png',
@@ -382,7 +382,7 @@ const mockPlants: Plant[] = [
   },
   {
     id: '42',
-    name: "Utricularia graminifolia",
+    name: "Grass-leaved Bladderwort",
     scientificName: "Utricularia graminifolia",
     description: "A carnivorous carpeting plant that forms a dense, bright green lawn. It can be challenging to establish but is stunning once settled.",
     photoUrl: 'https://placehold.co/600x400.png',
