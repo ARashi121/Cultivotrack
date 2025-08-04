@@ -51,6 +51,7 @@ export interface ProtocolDevelopmentExperiment {
 
 export interface Plant {
   id: string;
+  code: string;
   name: string;
   scientificName: string;
   description: string;
