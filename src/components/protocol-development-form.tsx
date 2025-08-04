@@ -7,12 +7,9 @@ import * as z from "zod"
 import { format } from "date-fns"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -26,8 +23,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useToast } from "@/hooks/use-toast"
 import { getPlants } from "@/lib/mock-data"
 import { cn } from "@/lib/utils"
-import { CalendarIcon, Check, ChevronsUpDown, FlaskConical, ImagePlus, PlusCircle, Beaker } from "lucide-react"
+import { CalendarIcon, ChevronsUpDown, Check, PlusCircle, Beaker, FlaskConical, ImagePlus } from "lucide-react"
 import { useState } from "react"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "./ui/command"
 
 
 const sterilisationProcedures = ["70% Ethanol for 1 min", "10% Bleach solution for 10 mins", "Autoclaving at 121°C"];
@@ -42,6 +40,7 @@ const protocolFormSchema = z.object({
   inoculationMedia: z.string({ required_error: "Please select a media." }),
   customInoculationMedia: z.string().optional(),
   initialObservation: z.string().optional(),
+  observationNotes: z.string().optional(),
   experimentalNotes: z.string().optional(),
   status: z.enum(["ongoing", "success", "failed"], { required_error: "You must select a status."}),
   image: z.any().optional(),
@@ -256,14 +255,14 @@ export function ProtocolDevelopmentForm({ plantId, onSuccess }: ProtocolDevelopm
         </div>
         
          <div className="space-y-4 p-1">
+             <FormLabel>Initial Observation (Optional)</FormLabel>
             <FormField
                 control={form.control}
                 name="initialObservation"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>Initial Observation</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl><SelectTrigger><SelectValue placeholder="Select an initial observation (optional)" /></SelectTrigger></FormControl>
+                        <FormControl><SelectTrigger><SelectValue placeholder="Select an initial observation type" /></SelectTrigger></FormControl>
                         <SelectContent>
                             {observationTypes.map(obs => <SelectItem key={obs} value={obs} className="capitalize">{obs}</SelectItem>)}
                         </SelectContent>
@@ -272,26 +271,26 @@ export function ProtocolDevelopmentForm({ plantId, onSuccess }: ProtocolDevelopm
                     </FormItem>
                 )}
                 />
-
+            
             <FormField
                 control={form.control}
-                name="experimentalNotes"
+                name="observationNotes"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>Experimental Notes</FormLabel>
                     <FormControl>
-                        <Textarea placeholder="Overall goals, hypothesis, etc." className="resize-y min-h-[100px]" {...field} />
+                        <Textarea placeholder="Notes about this initial observation..." className="resize-y min-h-[60px]" {...field} />
                     </FormControl>
                     <FormMessage />
                     </FormItem>
                 )}
             />
-             <FormField
+
+            <FormField
                 control={form.control}
                 name="image"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel className="flex items-center"><ImagePlus className="mr-2 h-4 w-4 text-primary"/>Upload Initial Image</FormLabel>
+                    <FormLabel className="flex items-center"><ImagePlus className="mr-2 h-4 w-4 text-primary"/>Upload Image for Observation</FormLabel>
                     <FormControl><Input type="file" accept="image/*" onChange={handleImageChange} /></FormControl>
                     <FormMessage />
                     </FormItem>
@@ -299,6 +298,20 @@ export function ProtocolDevelopmentForm({ plantId, onSuccess }: ProtocolDevelopm
              />
              {imagePreview && <div className="relative w-full h-48 rounded-lg overflow-hidden border"><img src={imagePreview} alt="Preview" className="w-full h-full object-contain" /></div>}
             
+             <FormField
+                control={form.control}
+                name="experimentalNotes"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Overall Experimental Notes</FormLabel>
+                    <FormControl>
+                        <Textarea placeholder="Goals, hypothesis, etc." className="resize-y min-h-[100px]" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+            />
+
              <FormField
                 control={form.control}
                 name="status"

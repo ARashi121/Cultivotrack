@@ -74,7 +74,7 @@ const mockPlants: Plant[] = [
             status: 'ongoing',
             notes: 'Reduced contamination, some callus formation.',
              observations: [
-                { id: 'obs2', date: '2024-04-10', observation: 'callus', imageUrl: 'https://placehold.co/300x200.png' },
+                { id: 'obs2', date: '2024-04-10', observation: 'callus', imageUrl: 'https://placehold.co/300x200.png', notes: 'Initial callus visible.' },
                 { id: 'obs3', date: '2024-04-25', observation: 'shoot', notes: 'First shoots appearing.'}
             ],
             subcultures: [
