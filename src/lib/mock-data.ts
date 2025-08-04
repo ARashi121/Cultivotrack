@@ -59,10 +59,35 @@ const mockPlants: Plant[] = [
     description: 'A succulent used in tequila production.',
     photoUrl: 'https://placehold.co/600x400.png',
     type: 'development',
-    subcultureHistory: [
-      { id: 's5', date: '2024-06-05', explantCount: 20, media: 'Experiment X1', notes: 'Testing new hormone levels.' },
-    ],
+    subcultureHistory: [],
     hardeningHistory: [],
+    protocolExperiments: [
+        {
+            id: 'exp1',
+            iteration: 1,
+            inoculationDate: '2024-03-10',
+            sterilisationProcedure: '70% Ethanol for 1 min, 1% NaOCl for 10 mins',
+            inoculationMedia: 'MS + 1mg/L BAP',
+            status: 'failed',
+            notes: 'High contamination rate observed after 5 days.',
+            observations: [
+                { id: 'obs1', date: '2024-03-15', observation: 'contamination', notes: 'Fungal growth visible.'}
+            ]
+        },
+        {
+            id: 'exp2',
+            iteration: 2,
+            inoculationDate: '2024-04-02',
+            sterilisationProcedure: '70% Ethanol for 2 min, 1.5% NaOCl for 15 mins',
+            inoculationMedia: 'MS + 1mg/L BAP + Antifungal agent',
+            status: 'ongoing',
+            notes: 'Reduced contamination, some callus formation.',
+             observations: [
+                { id: 'obs2', date: '2024-04-10', observation: 'callus', imageUrl: 'https://placehold.co/300x200.png' },
+                { id: 'obs3', date: '2024-04-25', observation: 'shoot', notes: 'First shoots appearing.'}
+            ]
+        }
+    ]
   },
   {
     id: '6',
@@ -71,10 +96,20 @@ const mockPlants: Plant[] = [
     description: 'A rare, leafless orchid under protocol optimization.',
     photoUrl: 'https://placehold.co/600x400.png',
     type: 'development',
-    subcultureHistory: [
-      { id: 's6', date: '2024-05-25', explantCount: 5, media: 'Experiment P2', notes: 'Low germination rate.' },
-    ],
+    subcultureHistory: [],
     hardeningHistory: [],
+    protocolExperiments: [
+         {
+            id: 'exp3',
+            iteration: 1,
+            inoculationDate: '2024-05-15',
+            sterilisationProcedure: 'Proprietary Seed Sterilization Technique v1',
+            inoculationMedia: 'P723 Orchid Maintenance Medium',
+            status: 'ongoing',
+            notes: 'Germination is slow, as expected for this species.',
+            observations: []
+        }
+    ]
   },
 ];
 

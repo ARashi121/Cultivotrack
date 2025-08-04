@@ -16,6 +16,25 @@ export interface HardeningEvent {
   notes?: string;
 }
 
+export interface ExperimentObservation {
+    id: string;
+    date: string;
+    observation: 'callus' | 'shoot' | 'root' | 'necrosis' | 'contamination' | 'other';
+    notes?: string;
+    imageUrl?: string;
+}
+
+export interface ProtocolDevelopmentExperiment {
+    id: string;
+    iteration: number;
+    inoculationDate: string;
+    sterilisationProcedure: string;
+    inoculationMedia: string;
+    observations: ExperimentObservation[];
+    status: 'ongoing' | 'success' | 'failed';
+    notes?: string;
+}
+
 export interface Plant {
   id: string;
   name: string;
@@ -25,6 +44,7 @@ export interface Plant {
   type: PlantType;
   subcultureHistory: SubcultureEvent[];
   hardeningHistory: HardeningEvent[];
+  protocolExperiments?: ProtocolDevelopmentExperiment[];
 }
 
 export interface AnalysisResult {
