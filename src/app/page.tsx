@@ -1,3 +1,4 @@
+
 import { PlantCard } from '@/components/plant-card';
 import { MainLayout } from '@/components/layout';
 import { getPlants } from '@/lib/mock-data';
@@ -15,12 +16,6 @@ export default function Home() {
           <h1 className="text-3xl font-bold tracking-tight font-headline">
             TC Plants
           </h1>
-          <Link href="/subculture/new">
-            <Button>
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Log Subculture
-            </Button>
-          </Link>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {plants.map((plant) => (

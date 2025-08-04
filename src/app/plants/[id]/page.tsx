@@ -1,3 +1,6 @@
+
+"use client"
+
 import { getPlantById } from '@/lib/mock-data';
 import { MainLayout } from '@/components/layout';
 import { notFound } from 'next/navigation';
@@ -9,12 +12,29 @@ import { ContaminationAnalyzer } from '@/components/contamination-analyzer';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { SubcultureForm } from '@/components/subculture-form';
+import { PlusCircle } from 'lucide-react';
+import { useState } from 'react';
 
 export default function PlantDetailPage({ params }: { params: { id: string } }) {
   const plant = getPlantById(params.id);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   if (!plant) {
     notFound();
+  }
+
+  const handleFormSuccess = () => {
+    setIsDialogOpen(false);
+    // Here you might want to refresh the subculture history data
   }
 
   return (
@@ -56,9 +76,24 @@ export default function PlantDetailPage({ params }: { params: { id: string } }) 
                     <CardDescription>Records of all subculturing events for this plant.</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <Link href="/subculture/new" className="w-full">
-                      <Button className="w-full bg-primary/90 hover:bg-primary">Add New Subculture Event</Button>
-                    </Link>
+                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                      <DialogTrigger asChild>
+                         <Button className="w-full bg-primary/90 hover:bg-primary">
+                          <PlusCircle className="mr-2 h-4 w-4" />
+                          Add New Subculture Event
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+                        <DialogHeader>
+                          <DialogTitle>Log New Subculture Event</DialogTitle>
+                          <DialogDescription>
+                            Enter the details for the new subculture event for {plant.name}.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <SubcultureForm plantId={plant.id} onSuccess={handleFormSuccess} />
+                      </DialogContent>
+                    </Dialog>
+
                     <Table>
                       <TableHeader>
                         <TableRow>
