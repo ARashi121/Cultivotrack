@@ -35,15 +35,25 @@ const prompt = ai.definePrompt({
   output: {schema: ParseSubcultureSheetOutputSchema},
   prompt: `You are an expert data extraction assistant for a plant tissue culture lab. Your task is to extract subculture data from the provided spreadsheet content and convert it into a structured JSON format.
 
-The data represents subculture events. The columns might be in any order, but will have headers like 'Plant Name', 'Date', 'Technician', 'Jars Used', 'Contaminated Jars', 'Jars to Hardening', 'Notes'.
+The data represents subculture events. The columns might be in any order, but will likely have headers such as:
+- 'Plant Name' (or 'Plant')
+- 'Date' (or 'Subculture Date')
+- 'Technician' (or 'Done By')
+- 'Jars Used' (or 'Number of Jars')
+- 'Contaminated Jars'
+- 'Jars to Hardening'
+- 'Notes'
 
-- Your primary goal is to extract the text as-is from each relevant column for each row.
-- Do NOT perform any data type conversions. All extracted values should be strings.
-- Do NOT try to interpret or convert date formats. Extract the date text exactly as it appears in the source data.
-- If a value is missing or a column is not present for a record, omit the corresponding key from the JSON object for that record. Do not include keys with null or empty string values.
-- The output must be a JSON object with a single key "records" which is an array of subculture objects.
+Your task is to extract the text from each relevant column for each row.
 
-Analyze the following spreadsheet data:
+**IMPORTANT RULES:**
+1.  **ONLY extract rows that have a value for 'Plant Name', 'Date', and 'Jars Used'. If any of these three are missing for a row, SKIP THAT ROW ENTIRELY.**
+2.  Do NOT perform any data type conversions. All extracted values must be strings.
+3.  Extract the date text exactly as it appears in the source data. Do NOT reformat it.
+4.  If a value for an OPTIONAL column (like 'Notes' or 'Contaminated Jars') is missing, simply omit the key for that record.
+5.  The output must be a JSON object with a single key "records" which is an array of subculture objects.
+
+Analyze the following spreadsheet data and extract the valid records:
 \`\`\`
 {{{sheetData}}}
 \`\`\`
