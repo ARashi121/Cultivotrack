@@ -64,7 +64,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
       </div>
       <div className="flex flex-col">
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
-            <div className="flex-1 md:hidden">
+            <div className="md:hidden">
               <Sheet>
                 <SheetTrigger asChild>
                   <Button
@@ -84,8 +84,8 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                 </SheetContent>
               </Sheet>
             </div>
-            <div className="flex-1 flex justify-start">
-                 <Logo />
+            <div className="flex-1 w-full flex items-center justify-end">
+                {/* User profile section was here */}
             </div>
         </header>
         <main className="flex flex-1 flex-col gap-4 bg-background">
