@@ -362,6 +362,33 @@ const mockPlants: Plant[] = [
     type: 'tc',
     subcultureHistory: [],
   },
+  {
+    id: '40',
+    name: "Taxiphyllum 'Flame'",
+    scientificName: "Taxiphyllum 'Flame'",
+    description: "A unique moss that grows in an upward, flame-like pattern, creating a dense, green fire effect.",
+    photoUrl: 'https://placehold.co/600x400.png',
+    type: 'tc',
+    subcultureHistory: [],
+  },
+  {
+    id: '41',
+    name: "Tonina fluviatilis",
+    scientificName: "Tonina fluviatilis",
+    description: "A challenging but beautiful plant with star-like crowns and light green leaves, often used as a focal point.",
+    photoUrl: 'https://placehold.co/600x400.png',
+    type: 'tc',
+    subcultureHistory: [],
+  },
+  {
+    id: '42',
+    name: "Utricularia graminifolia",
+    scientificName: "Utricularia graminifolia",
+    description: "A carnivorous carpeting plant that forms a dense, bright green lawn. It can be challenging to establish but is stunning once settled.",
+    photoUrl: 'https://placehold.co/600x400.png',
+    type: 'tc',
+    subcultureHistory: [],
+  },
 ];
 
 
