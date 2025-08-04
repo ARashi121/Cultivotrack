@@ -121,7 +121,7 @@ export default function PlantDetailPage() {
                           <DialogTrigger asChild>
                              <Button className="w-full bg-primary/90 hover:bg-primary">
                               <PlusCircle className="mr-2 h-4 w-4" />
-                              Add New Subculture Event
+                              Log Subculture
                             </Button>
                           </DialogTrigger>
                           <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
