@@ -33,6 +33,7 @@ export interface ProtocolDevelopmentExperiment {
     observations: ExperimentObservation[];
     status: 'ongoing' | 'success' | 'failed';
     notes?: string;
+    subcultures?: SubcultureEvent[];
 }
 
 export interface Plant {

@@ -85,6 +85,9 @@ const mockPlants: Plant[] = [
              observations: [
                 { id: 'obs2', date: '2024-04-10', observation: 'callus', imageUrl: 'https://placehold.co/300x200.png' },
                 { id: 'obs3', date: '2024-04-25', observation: 'shoot', notes: 'First shoots appearing.'}
+            ],
+            subcultures: [
+                { id: 'exp2-s1', date: '2024-05-10', explantCount: 10, media: 'MS + 0.5mg/L BAP', notes: 'First subculture for shoot elongation.'}
             ]
         }
     ]
@@ -107,7 +110,8 @@ const mockPlants: Plant[] = [
             inoculationMedia: 'P723 Orchid Maintenance Medium',
             status: 'ongoing',
             notes: 'Germination is slow, as expected for this species.',
-            observations: []
+            observations: [],
+            subcultures: [],
         }
     ]
   },

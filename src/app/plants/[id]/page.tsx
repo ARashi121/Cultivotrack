@@ -22,7 +22,7 @@ import {
 import { SubcultureForm } from '@/components/subculture-form';
 import { ProtocolDevelopmentForm } from '@/components/protocol-development-form';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { PlusCircle, Calendar, Microscope, FlaskConical, Beaker, FileText, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { PlusCircle, Calendar, Microscope, FlaskConical, Beaker, FileText, CheckCircle, XCircle, Clock, Dna } from 'lucide-react';
 import { useState } from 'react';
 import { format } from 'date-fns';
 
@@ -30,6 +30,8 @@ export default function PlantDetailPage({ params }: { params: { id: string } }) 
   const plant = getPlantById(params.id);
   const [isSubcultureDialogOpen, setIsSubcultureDialogOpen] = useState(false);
   const [isExperimentDialogOpen, setIsExperimentDialogOpen] = useState(false);
+  const [isExperimentSubcultureDialogOpen, setIsExperimentSubcultureDialogOpen] = useState(false);
+
 
   if (!plant) {
     notFound();
@@ -37,6 +39,11 @@ export default function PlantDetailPage({ params }: { params: { id: string } }) 
 
   const handleSubcultureSuccess = () => {
     setIsSubcultureDialogOpen(false);
+    // Here you might want to refresh the subculture history data
+  }
+
+  const handleExperimentSubcultureSuccess = () => {
+    setIsExperimentSubcultureDialogOpen(false);
     // Here you might want to refresh the subculture history data
   }
 
@@ -244,6 +251,50 @@ export default function PlantDetailPage({ params }: { params: { id: string } }) 
                                                         </div>
                                                     ) : (
                                                         <p className="text-sm text-muted-foreground">No observations recorded yet.</p>
+                                                    )}
+                                                </div>
+                                                 <div>
+                                                    <h4 className="font-semibold my-2 flex items-center gap-2"><Dna className="h-4 w-4 text-primary" />Subcultures</h4>
+                                                    {exp.subcultures && exp.subcultures.length > 0 ? (
+                                                       <Table>
+                                                          <TableHeader>
+                                                            <TableRow>
+                                                              <TableHead>Date</TableHead>
+                                                              <TableHead>Explants</TableHead>
+                                                              <TableHead>Media</TableHead>
+                                                            </TableRow>
+                                                          </TableHeader>
+                                                          <TableBody>
+                                                            {exp.subcultures.map(sc => (
+                                                              <TableRow key={sc.id}>
+                                                                <TableCell>{sc.date}</TableCell>
+                                                                <TableCell>{sc.explantCount}</TableCell>
+                                                                <TableCell><Badge variant="secondary">{sc.media}</Badge></TableCell>
+                                                              </TableRow>
+                                                            ))}
+                                                          </TableBody>
+                                                        </Table>
+                                                    ) : (
+                                                        <p className="text-sm text-muted-foreground">No subculture history for this experiment.</p>
+                                                    )}
+                                                    {exp.status === 'ongoing' && (
+                                                      <Dialog open={isExperimentSubcultureDialogOpen} onOpenChange={setIsExperimentSubcultureDialogOpen}>
+                                                        <DialogTrigger asChild>
+                                                           <Button variant="outline" size="sm" className="mt-2 w-full">
+                                                            <PlusCircle className="mr-2 h-4 w-4" />
+                                                            Add Subculture
+                                                          </Button>
+                                                        </DialogTrigger>
+                                                        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+                                                          <DialogHeader>
+                                                            <DialogTitle>Log Subculture for Experiment</DialogTitle>
+                                                            <DialogDescription>
+                                                              Log a new subculture for Iteration {exp.iteration} of {plant.name}.
+                                                            </DialogDescription>
+                                                          </DialogHeader>
+                                                          <SubcultureForm plantId={plant.id} onSuccess={handleExperimentSubcultureSuccess} />
+                                                        </DialogContent>
+                                                      </Dialog>
                                                     )}
                                                 </div>
                                             </AccordionContent>
