@@ -6,6 +6,10 @@ export interface SubcultureEvent {
   explantCount: number;
   media: string;
   notes?: string;
+  // Fields from form that are not in the base type yet
+  jarsUsed?: number;
+  contaminatedJars?: number;
+  jarsToHardening?: number;
 }
 
 export interface HardeningEvent {
