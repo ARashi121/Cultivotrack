@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { ContaminationAnalyzer } from '@/components/contamination-analyzer';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default function PlantDetailPage({ params }: { params: { id: string } }) {
   const plant = getPlantById(params.id);
@@ -55,7 +56,9 @@ export default function PlantDetailPage({ params }: { params: { id: string } }) 
                     <CardDescription>Records of all subculturing events for this plant.</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <Button className="w-full bg-primary/90 hover:bg-primary">Add New Subculture Event</Button>
+                    <Link href="/subculture/new" className="w-full">
+                      <Button className="w-full bg-primary/90 hover:bg-primary">Add New Subculture Event</Button>
+                    </Link>
                     <Table>
                       <TableHeader>
                         <TableRow>
