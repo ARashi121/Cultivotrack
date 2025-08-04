@@ -24,11 +24,11 @@ import { SubcultureForm } from '@/components/subculture-form';
 import { ProtocolDevelopmentForm } from '@/components/protocol-development-form';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { PlusCircle, Calendar, Microscope, FlaskConical, Beaker, FileText, CheckCircle, XCircle, Clock, Dna } from 'lucide-react';
-import { useState, use } from 'react';
+import { useState } from 'react';
 import { format } from 'date-fns';
 
 export default function PlantDetailPage() {
-  const params = use(useParams());
+  const params = useParams();
   const plant = getPlantById(params.id as string);
   const [isSubcultureDialogOpen, setIsSubcultureDialogOpen] = useState(false);
   const [isExperimentDialogOpen, setIsExperimentDialogOpen] = useState(false);
