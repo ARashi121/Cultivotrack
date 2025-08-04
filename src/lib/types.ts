@@ -1,3 +1,6 @@
+
+import { z } from 'zod';
+
 export type PlantType = 'tc' | 'development';
 
 export interface SubcultureEvent {
@@ -63,3 +66,15 @@ export interface AnalysisResult {
   contaminants: string;
   confidence: number;
 }
+
+export const ParsedSubcultureRecordSchema = z.object({
+    plantName: z.string().describe("The name of the plant."),
+    subcultureDate: z.string().describe("The date of the subculture in YYYY-MM-DD format."),
+    doneBy: z.string().describe("The name of the technician who performed the subculture."),
+    mediaType: z.string().describe("The media used for the subculture."),
+    jarsUsed: z.number().describe("The total number of jars used."),
+    contaminatedJars: z.number().optional().describe("The number of contaminated jars, if any."),
+    jarsToHardening: z.number().optional().describe("The number of jars transferred to hardening, if any."),
+    notes: z.string().optional().describe("Any notes associated with the event."),
+});
+export type ParsedSubcultureRecord = z.infer<typeof ParsedSubcultureRecordSchema>;

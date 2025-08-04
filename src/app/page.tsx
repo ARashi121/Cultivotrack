@@ -8,16 +8,19 @@ import { getPlants } from '@/lib/mock-data';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
-import { Filter, Search } from 'lucide-react';
+import { Filter, PlusCircle, Search, Upload } from 'lucide-react';
 import { DateRange } from 'react-day-picker';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { Plant } from '@/lib/types';
+import Link from 'next/link';
+import { SpreadsheetUploadDialog } from '@/components/spreadsheet-upload-dialog';
 
 export default function Home() {
   const allPlants = useMemo(() => getPlants().filter(p => p.type === 'tc'), []);
   const [searchTerm, setSearchTerm] = useState('');
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
+  const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
 
   const filteredPlants = useMemo(() => {
     let plants = allPlants;
@@ -46,13 +49,36 @@ export default function Home() {
     setDateRange(undefined);
   }
 
+  const handleUploadSuccess = () => {
+    setIsUploadDialogOpen(false);
+    // Here you would typically trigger a data refresh
+    // For now, we just close the dialog.
+  }
+
   return (
     <MainLayout>
+       <SpreadsheetUploadDialog 
+        isOpen={isUploadDialogOpen} 
+        onOpenChange={setIsUploadDialogOpen}
+        onSuccess={handleUploadSuccess}
+      />
       <div className="flex-1 space-y-4 p-4 sm:p-8 pt-6">
         <div className="flex items-center justify-between space-y-2">
           <h1 className="text-3xl font-bold tracking-tight font-headline">
             TC Plants
           </h1>
+          <div className="flex items-center space-x-2">
+            <Button variant="outline" onClick={() => setIsUploadDialogOpen(true)}>
+                <Upload className="mr-2 h-4 w-4" />
+                Import from Sheet
+            </Button>
+            <Link href="/subculture/new">
+                <Button>
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    New Subculture
+                </Button>
+            </Link>
+          </div>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
