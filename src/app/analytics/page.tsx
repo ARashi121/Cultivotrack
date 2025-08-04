@@ -6,11 +6,15 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis, Pie, P
 import { MainLayout } from "@/components/layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { getPlants } from "@/lib/mock-data"
+import { getPlants, getHardeningData } from "@/lib/mock-data"
 import { SubcultureEvent } from "@/lib/types"
-import { FlaskConical, Bug, TrendingUp, ShieldCheck } from "lucide-react"
-import { format, subMonths, getMonth } from "date-fns"
+import { FlaskConical, Bug, TrendingUp, ShieldCheck, Bot, FileText } from "lucide-react"
+import { format, subMonths } from "date-fns"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Button } from "@/components/ui/button"
+import { generateReport } from "@/app/actions"
+import ReactMarkdown from 'react-markdown'
+import { useToast } from "@/hooks/use-toast"
 
 // Chart configs can stay outside as they don't depend on random data
 const subcultureChartConfig = {
@@ -37,6 +41,9 @@ const contaminationChartConfig = {
 export default function AnalyticsPage() {
   const [loading, setLoading] = useState(true);
   const [analyticsData, setAnalyticsData] = useState<any>(null);
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false);
+  const [report, setReport] = useState<string | null>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     // Calculate analytics data from mock data inside useEffect
@@ -109,6 +116,27 @@ export default function AnalyticsPage() {
     });
     setLoading(false);
   }, []);
+  
+  const handleGenerateReport = async () => {
+    setIsGeneratingReport(true);
+    setReport(null);
+    try {
+        const plants = getPlants();
+        const hardeningData = getHardeningData();
+        const result = await generateReport({ plants, hardeningData });
+        setReport(result.report);
+    } catch (error) {
+        console.error("Failed to generate report:", error);
+        toast({
+            title: "Report Generation Failed",
+            description: "An error occurred while generating the AI report. Please try again.",
+            variant: "destructive",
+        })
+    } finally {
+        setIsGeneratingReport(false);
+    }
+  }
+
 
   if (loading || !analyticsData) {
     return (
@@ -191,6 +219,47 @@ export default function AnalyticsPage() {
               </CardContent>
             </Card>
         </div>
+        
+         <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <div>
+                    <CardTitle className="text-lg font-medium flex items-center gap-2">
+                        <Bot className="h-5 w-5 text-primary"/>
+                        AI-Powered Performance Report
+                    </CardTitle>
+                    <CardDescription>Click the button to generate an analysis of your lab's recent performance.</CardDescription>
+                </div>
+                 <Button onClick={handleGenerateReport} disabled={isGeneratingReport}>
+                    {isGeneratingReport ? 'Generating...' : 'Generate AI Report'}
+                </Button>
+            </CardHeader>
+            <CardContent>
+                {isGeneratingReport && (
+                    <div className="flex items-center justify-center p-8 space-x-2 text-muted-foreground">
+                        <Bot className="h-6 w-6 animate-pulse" />
+                        <p className="text-lg">Analyzing your data...</p>
+                    </div>
+                )}
+                {report && (
+                    <div className="prose prose-sm dark:prose-invert max-w-none p-4 rounded-lg bg-muted/50 border">
+                        <ReactMarkdown
+                            components={{
+                                h1: ({node, ...props}) => <h2 className="text-2xl font-headline" {...props} />,
+                                h2: ({node, ...props}) => <h3 className="text-xl font-headline border-b pb-2" {...props} />,
+                                h3: ({node, ...props}) => <h4 className="text-lg font-semibold" {...props} />,
+                                p: ({node, ...props}) => <p className="leading-relaxed" {...props} />,
+                                ul: ({node, ...props}) => <ul className="list-disc pl-6 space-y-1" {...props} />,
+                                ol: ({node, ...props}) => <ol className="list-decimal pl-6 space-y-1" {...props} />,
+                                code: ({node, ...props}) => <code className="bg-primary/10 text-primary font-semibold rounded-sm px-1 py-0.5" {...props} />
+                            }}
+                        >
+                            {report}
+                        </ReactMarkdown>
+                    </div>
+                )}
+            </CardContent>
+        </Card>
+
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
           <Card className="lg:col-span-4">
             <CardHeader>
@@ -297,5 +366,3 @@ const ChartLegendContent = (props: any) => {
     </ul>
   );
 };
-
-    
