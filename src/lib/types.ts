@@ -69,22 +69,23 @@ export interface AnalysisResult {
 // A more flexible schema for the AI to target. All fields are optional strings.
 export const LooseParsedSubcultureRecordSchema = z.object({
     plantName: z.string().optional(),
-    subcultureDate: z.string().optional(),
+    subcultureDate: z.string().optional(), // AI should return date as a string
     doneBy: z.string().optional(),
-    jarsUsed: z.string().optional(),
+    jarsUsed: z.string().optional(), // AI should return numbers as strings
     contaminatedJars: z.string().optional(),
     jarsToHardening: z.string().optional(),
     notes: z.string().optional(),
 });
 export type LooseParsedSubcultureRecord = z.infer<typeof LooseParsedSubcultureRecordSchema>;
 
+// The final, validated schema for use in the application
 export const ParsedSubcultureRecordSchema = z.object({
-    plantName: z.string().describe("The name of the plant."),
-    subcultureDate: z.string().describe("The date of the subculture in YYYY-MM-DD format."),
-    doneBy: z.string().describe("The name of the technician who performed the subculture."),
-    jarsUsed: z.number().describe("The total number of jars used."),
-    contaminatedJars: z.number().optional().describe("The number of contaminated jars, if any."),
-    jarsToHardening: z.number().optional().describe("The number of jars transferred to hardening, if any."),
-    notes: z.string().optional().describe("Any notes associated with the event."),
+    plantName: z.string(),
+    subcultureDate: z.string(), // Stored as 'YYYY-MM-DD' string after validation
+    doneBy: z.string(),
+    jarsUsed: z.number(),
+    contaminatedJars: z.number().optional(),
+    jarsToHardening: z.number().optional(),
+    notes: z.string().optional(),
 });
 export type ParsedSubcultureRecord = z.infer<typeof ParsedSubcultureRecordSchema>;

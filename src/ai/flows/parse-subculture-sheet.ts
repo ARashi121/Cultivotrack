@@ -33,27 +33,25 @@ const prompt = ai.definePrompt({
   name: 'parseSubcultureSheetPrompt',
   input: {schema: ParseSubcultureSheetInputSchema},
   output: {schema: ParseSubcultureSheetOutputSchema},
-  prompt: `You are an expert data extraction assistant for a plant tissue culture lab. Your task is to extract subculture data from the provided spreadsheet content and convert it into a structured JSON format.
+  prompt: `You are an expert data extraction assistant. Your task is to extract subculture data from the provided spreadsheet content and convert it into a structured JSON array.
 
-The data represents subculture events. The columns might be in any order, but will likely have headers such as:
-- 'Plant Name' (or 'Plant')
-- 'Date' (or 'Subculture Date')
-- 'Technician' (or 'Done By')
-- 'Jars Used' (or 'Number of Jars')
-- 'Contaminated Jars'
-- 'Jars to Hardening'
-- 'Notes'
+The data represents subculture events. The column headers might have slightly different names, but map them to the following keys:
+- 'plantName': The name of the plant.
+- 'subcultureDate': The date of the event.
+- 'doneBy': The name of the technician.
+- 'jarsUsed': The number of jars used.
+- 'contaminatedJars': Number of jars that were contaminated.
+- 'jarsToHardening': Number of jars moved to hardening.
+- 'notes': Any additional notes.
 
-Your task is to extract the text from each relevant column for each row.
+**CRITICAL RULES:**
+1.  **Extract data from EVERY row**, even if it looks incomplete. The user will validate it later.
+2.  Return ALL extracted values as **strings**. Do NOT convert data types.
+3.  Extract the date text **exactly as it appears**. Do NOT reformat it.
+4.  If a cell for a given column is empty, simply omit the key for that record in the JSON output.
+5.  The final output MUST be a JSON object with a single key "records", which contains an array of the extracted data objects.
 
-**IMPORTANT RULES:**
-1.  **ONLY extract rows that have a value for 'Plant Name', 'Date', and 'Jars Used'. If any of these three are missing for a row, SKIP THAT ROW ENTIRELY.**
-2.  Do NOT perform any data type conversions. All extracted values must be strings.
-3.  Extract the date text exactly as it appears in the source data. Do NOT reformat it.
-4.  If a value for an OPTIONAL column (like 'Notes' or 'Contaminated Jars') is missing, simply omit the key for that record.
-5.  The output must be a JSON object with a single key "records" which is an array of subculture objects.
-
-Analyze the following spreadsheet data and extract the valid records:
+Spreadsheet Data:
 \`\`\`
 {{{sheetData}}}
 \`\`\`

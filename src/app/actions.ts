@@ -28,19 +28,32 @@ export async function generateReport(input: GenerateLabReportInput): Promise<Gen
   }
 }
 
-function tryParseDate(dateString: string): Date | null {
+/**
+ * Tries to parse a date string from a variety of common formats.
+ * @param dateString The date string to parse.
+ * @returns A Date object or null if parsing fails.
+ */
+function tryParseDate(dateString: string | undefined | null): Date | null {
     if (!dateString) return null;
 
-    // List of common date formats to try
+    // List of common date formats to try, from most specific to most general
     const formats = [
-        'yyyy-MM-dd',
         'MM/dd/yyyy',
+        'yyyy-MM-dd',
         'dd/MM/yyyy',
         'MM-dd-yyyy',
         'dd-MM-yyyy',
         'M/d/yy',
         'M/d/yyyy',
+        'MM/d/yyyy',
+        'M/dd/yyyy',
+        'yyyy/MM/dd',
+        'dd.MM.yyyy',
+        'MM.dd.yyyy',
+        'd MMM yyyy', // 5 Jun 2024
+        'dd MMM yyyy',// 05 Jun 2024
         'LLL dd, yyyy', // e.g., Jun 01, 2024
+        'PP', // date-fns format for medium date
     ];
 
     for (const fmt of formats) {
@@ -54,7 +67,7 @@ function tryParseDate(dateString: string): Date | null {
         }
     }
     
-    // As a last resort, try the native Date constructor
+    // As a last resort, try the native Date constructor which is very flexible
     const nativeParsed = new Date(dateString);
     if(isValid(nativeParsed)) {
         return nativeParsed;
@@ -67,40 +80,62 @@ export async function performSheetParsing(sheetData: string): Promise<{ records:
     try {
         const aiResult: ParseSubcultureSheetOutput = await parseSubcultureSheet({ sheetData });
 
-        if (!aiResult || !aiResult.records || aiResult.records.length === 0) {
-            throw new Error("AI parsing returned no valid records. Please ensure your sheet has 'plantName', 'subcultureDate', and 'jarsUsed' columns.");
+        if (!aiResult || !aiResult.records) {
+            throw new Error("AI parsing returned no data. Please ensure your sheet has content.");
         }
-
-        const validatedRecords: ParsedSubcultureRecord[] = aiResult.records.map(looseRecord => {
-             const parsedDate = tryParseDate(looseRecord.subcultureDate || '');
-             const jarsUsedNum = parseInt(looseRecord.jarsUsed || '0', 10);
-
-             return {
-                plantName: looseRecord.plantName || 'N/A',
-                subcultureDate: parsedDate ? format(parsedDate, 'yyyy-MM-dd') : 'Invalid Date',
-                doneBy: looseRecord.doneBy || 'N/A',
-                jarsUsed: isNaN(jarsUsedNum) ? 0 : jarsUsedNum,
-                contaminatedJars: looseRecord.contaminatedJars ? parseInt(looseRecord.contaminatedJars, 10) : undefined,
-                jarsToHardening: looseRecord.jarsToHardening ? parseInt(looseRecord.jarsToHardening, 10) : undefined,
-                notes: looseRecord.notes,
-             };
-        }).filter(record => record.plantName !== 'N/A' && record.subcultureDate !== 'Invalid Date' && record.jarsUsed > 0);
         
+        const validatedRecords: ParsedSubcultureRecord[] = [];
 
-        if(validatedRecords.length === 0) {
-            throw new Error("AI could not extract any valid records. Please check the spreadsheet format and column headers.");
+        for (const looseRecord of aiResult.records) {
+            const parsedDate = tryParseDate(looseRecord.subcultureDate);
+            
+            // Core validation: plantName, date, and jarsUsed are required.
+            if (!looseRecord.plantName || !parsedDate || !looseRecord.jarsUsed) {
+                continue; // Skip rows missing essential data
+            }
+
+            const jarsUsedNum = parseInt(looseRecord.jarsUsed, 10);
+            if (isNaN(jarsUsedNum) || jarsUsedNum <= 0) {
+                continue; // Skip if jarsUsed is not a positive number
+            }
+
+            const record: ParsedSubcultureRecord = {
+                plantName: looseRecord.plantName,
+                subcultureDate: format(parsedDate, 'yyyy-MM-dd'),
+                doneBy: looseRecord.doneBy || 'N/A',
+                jarsUsed: jarsUsedNum,
+            };
+
+            if (looseRecord.contaminatedJars) {
+                const contaminatedNum = parseInt(looseRecord.contaminatedJars, 10);
+                if (!isNaN(contaminatedNum)) {
+                    record.contaminatedJars = contaminatedNum;
+                }
+            }
+
+            if (looseRecord.jarsToHardening) {
+                const toHardeningNum = parseInt(looseRecord.jarsToHardening, 10);
+                if (!isNaN(toHardeningNum)) {
+                    record.jarsToHardening = toHardeningNum;
+                }
+            }
+
+            if(looseRecord.notes) {
+                record.notes = looseRecord.notes;
+            }
+
+            // Final check against the strict schema
+            const finalCheck = ParsedSubcultureRecordSchema.safeParse(record);
+            if (finalCheck.success) {
+                validatedRecords.push(finalCheck.data);
+            }
+        }
+        
+        if (validatedRecords.length === 0) {
+            throw new Error("AI could not extract any valid records. Please check the spreadsheet format and ensure it contains columns for 'plantName', 'subcultureDate', and 'jarsUsed' with valid data.");
         }
 
-        // Final validation against the strict schema to be safe
-        const finalValidatedRecords = z.array(ParsedSubcultureRecordSchema).safeParse(validatedRecords);
-
-        if (!finalValidatedRecords.success) {
-            console.error("Final validation failed:", finalValidatedRecords.error);
-            throw new Error("Some records had an invalid format after parsing.");
-        }
-
-
-        return { records: finalValidatedRecords.data };
+        return { records: validatedRecords };
 
     } catch (error) {
         console.error('Error in sheet parsing action:', error);
