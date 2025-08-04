@@ -1,18 +1,16 @@
 import { PlantCard } from '@/components/plant-card';
 import { MainLayout } from '@/components/layout';
 import { getPlants } from '@/lib/mock-data';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 
-export default function Home() {
-  const plants = getPlants().filter(p => p.type === 'standard');
+export default function ProtocolDevelopmentPage() {
+  const plants = getPlants().filter(p => p.type === 'development');
 
   return (
     <MainLayout>
       <div className="flex-1 space-y-4 p-4 sm:p-8 pt-6">
         <div className="flex items-center justify-between space-y-2">
           <h1 className="text-3xl font-bold tracking-tight font-headline">
-            Standardised Protocol Plants
+            Protocol Development Plants
           </h1>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
