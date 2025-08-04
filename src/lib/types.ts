@@ -14,9 +14,16 @@ export interface SubcultureEvent {
 
 export interface HardeningEvent {
   id: string;
-  date: string;
+  plantId: string;
+  plantName: string;
+  dateTransferred: string;
   transferredCount: number;
-  survivalRate: number;
+  stage: 'acclimatizing' | 'growing' | 'exported';
+  acclimatizationSuccessRate?: number;
+  dateMovedToGrowth?: string;
+  growthSuccessRate?: number;
+  dateExported?: string;
+  exportedTo?: string;
   notes?: string;
 }
 
@@ -48,7 +55,6 @@ export interface Plant {
   photoUrl: string;
   type: PlantType;
   subcultureHistory: SubcultureEvent[];
-  hardeningHistory: HardeningEvent[];
   protocolExperiments?: ProtocolDevelopmentExperiment[];
 }
 

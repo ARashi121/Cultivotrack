@@ -1,4 +1,4 @@
-import { Plant } from './types';
+import { Plant, HardeningEvent } from './types';
 
 const mockPlants: Plant[] = [
   {
@@ -12,9 +12,6 @@ const mockPlants: Plant[] = [
       { id: 's1', date: '2024-06-01', explantCount: 50, media: 'MS Media', notes: 'Vigorous growth observed.' },
       { id: 's2', date: '2024-05-01', explantCount: 45, media: 'MS Media', notes: 'Routine subculture.' },
     ],
-    hardeningHistory: [
-      { id: 'h1', date: '2024-04-15', transferredCount: 20, survivalRate: 0.9, notes: 'Transferred to greenhouse.' },
-    ],
   },
   {
     id: '2',
@@ -26,7 +23,6 @@ const mockPlants: Plant[] = [
     subcultureHistory: [
       { id: 's3', date: '2024-06-10', explantCount: 60, media: 'B5 Media', notes: 'Healthy proliferation.' },
     ],
-    hardeningHistory: [],
   },
   {
     id: '3',
@@ -36,9 +32,6 @@ const mockPlants: Plant[] = [
     photoUrl: 'https://placehold.co/600x400.png',
     type: 'tc',
     subcultureHistory: [],
-    hardeningHistory: [
-        { id: 'h2', date: '2024-05-20', transferredCount: 15, survivalRate: 0.85, notes: 'Acclimatizing well.' },
-    ],
   },
   {
     id: '4',
@@ -50,7 +43,6 @@ const mockPlants: Plant[] = [
     subcultureHistory: [
         { id: 's4', date: '2024-06-12', explantCount: 30, media: 'Peat-based Media', notes: 'Slower growth rate.' },
     ],
-    hardeningHistory: [],
   },
   {
     id: '5',
@@ -60,7 +52,6 @@ const mockPlants: Plant[] = [
     photoUrl: 'https://placehold.co/600x400.png',
     type: 'development',
     subcultureHistory: [],
-    hardeningHistory: [],
     protocolExperiments: [
         {
             id: 'exp1',
@@ -100,7 +91,6 @@ const mockPlants: Plant[] = [
     photoUrl: 'https://placehold.co/600x400.png',
     type: 'development',
     subcultureHistory: [],
-    hardeningHistory: [],
     protocolExperiments: [
          {
             id: 'exp3',
@@ -117,10 +107,63 @@ const mockPlants: Plant[] = [
   },
 ];
 
+
+const mockHardeningData: HardeningEvent[] = [
+    {
+        id: 'h1',
+        plantId: '1',
+        plantName: 'Boston Fern',
+        dateTransferred: '2024-05-15',
+        transferredCount: 50,
+        stage: 'growing',
+        acclimatizationSuccessRate: 0.9,
+        dateMovedToGrowth: '2024-06-01',
+        growthSuccessRate: 0.95,
+        notes: 'Vigorous growth in the greenhouse.'
+    },
+    {
+        id: 'h2',
+        plantId: '3',
+        plantName: 'Orchid',
+        dateTransferred: '2024-06-01',
+        transferredCount: 30,
+        stage: 'acclimatizing',
+        notes: 'Initial transfer to a controlled environment chamber.'
+    },
+    {
+        id: 'h3',
+        plantId: '1',
+        plantName: 'Boston Fern',
+        dateTransferred: '2024-04-20',
+        transferredCount: 25,
+        stage: 'exported',
+        acclimatizationSuccessRate: 0.88,
+        dateMovedToGrowth: '2024-05-10',
+        growthSuccessRate: 0.92,
+        dateExported: '2024-06-05',
+        exportedTo: 'GreenLeaf Nursery',
+        notes: 'Batch sold to a commercial partner.'
+    },
+    {
+        id: 'h4',
+        plantId: '2',
+        plantName: 'Spider Plant',
+        dateTransferred: '2024-06-10',
+        transferredCount: 100,
+        stage: 'acclimatizing',
+        notes: 'Large batch, monitoring closely for mold.'
+    }
+];
+
+
 export const getPlants = (): Plant[] => {
   return mockPlants;
 }
 
 export const getPlantById = (id: string): Plant | undefined => {
   return mockPlants.find((plant) => plant.id === id);
+}
+
+export const getHardeningData = (): HardeningEvent[] => {
+    return mockHardeningData;
 }

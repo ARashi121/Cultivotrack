@@ -68,7 +68,6 @@ export default function PlantDetailPage() {
   const tabs = plant.type === 'tc'
     ? [
         { value: 'subculture', label: 'Subculture' },
-        { value: 'hardening', label: 'Hardening' },
         { value: 'analysis', label: 'Analysis' },
       ]
     : [
@@ -153,37 +152,6 @@ export default function PlantDetailPage() {
                               </TableRow>
                             )) : (
                               <TableRow><TableCell colSpan={3} className="text-center">No subculture history.</TableCell></TableRow>
-                            )}
-                          </TableBody>
-                        </Table>
-                      </CardContent>
-                    </Card>
-                  </TabsContent>
-                  <TabsContent value="hardening">
-                     <Card>
-                      <CardHeader>
-                        <CardTitle>Hardening History</CardTitle>
-                        <CardDescription>Records of transfers to ex-vitro conditions.</CardDescription>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <Button className="w-full bg-primary/90 hover:bg-primary">Add New Hardening Event</Button>
-                        <Table>
-                          <TableHeader>
-                            <TableRow>
-                              <TableHead>Date</TableHead>
-                              <TableHead>Transferred</TableHead>
-                              <TableHead>Survival %</TableHead>
-                            </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                             {plant.hardeningHistory.length > 0 ? plant.hardeningHistory.map(event => (
-                              <TableRow key={event.id}>
-                                <TableCell>{event.date}</TableCell>
-                                <TableCell>{event.transferredCount}</TableCell>
-                                <TableCell>{event.survivalRate * 100}%</TableCell>
-                              </TableRow>
-                            )) : (
-                               <TableRow><TableCell colSpan={3} className="text-center">No hardening history.</TableCell></TableRow>
                             )}
                           </TableBody>
                         </Table>

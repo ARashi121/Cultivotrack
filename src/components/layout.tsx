@@ -5,11 +5,12 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Sprout, Menu, Home, FlaskConical, BarChart3 } from 'lucide-react';
+import { Sprout, Menu, Home, FlaskConical, BarChart3, Trees } from 'lucide-react';
 
 const navItems = [
   { href: '/', label: 'TC Plants', icon: Home },
   { href: '/protocol-development', label: 'Protocol Development', icon: FlaskConical },
+  { href: '/hardening', label: 'Hardening', icon: Trees },
   { href: '/analytics', label: 'Analytics', icon: BarChart3 },
 ];
 
