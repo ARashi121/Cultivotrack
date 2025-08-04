@@ -1,28 +1,16 @@
 "use client";
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { cn } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Sprout, Menu, Home, FlaskConical, BarChart3, Trees, User, LogOut, Shield } from 'lucide-react';
-import { useAuth } from '@/hooks/use-auth';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { useEffect } from 'react';
+import { Sprout, Menu, Home, FlaskConical, BarChart3, Trees } from 'lucide-react';
 
 const navItems = [
-  { href: '/', label: 'TC Plants', icon: Home, roles: ['admin', 'technician', 'viewer'] },
-  { href: '/protocol-development', label: 'Protocol Development', icon: FlaskConical, roles: ['admin', 'technician', 'viewer'] },
-  { href: '/hardening', label: 'Hardening', icon: Trees, roles: ['admin', 'technician', 'viewer'] },
-  { href: '/analytics', label: 'Analytics', icon: BarChart3, roles: ['admin', 'technician', 'viewer'] },
-  { href: '/admin', label: 'Admin', icon: Shield, roles: ['admin'] },
+  { href: '/', label: 'TC Plants', icon: Home },
+  { href: '/protocol-development', label: 'Protocol Development', icon: FlaskConical },
+  { href: '/hardening', label: 'Hardening', icon: Trees },
+  { href: '/analytics', label: 'Analytics', icon: BarChart3 },
 ];
 
 function Logo() {
@@ -34,15 +22,9 @@ function Logo() {
   );
 }
 
-function NavLink({ href, label, icon: Icon, userRole }: { href: string; label: string; icon: React.ElementType, userRole: string }) {
+function NavLink({ href, label, icon: Icon }: { href: string; label: string; icon: React.ElementType }) {
   const pathname = usePathname();
   const isActive = pathname === href;
-
-  const item = navItems.find(i => i.href === href);
-  if (!item || !item.roles.includes(userRole)) {
-    return null;
-  }
-
 
   return (
     <Link href={href}>
@@ -57,35 +39,17 @@ function NavLink({ href, label, icon: Icon, userRole }: { href: string; label: s
   );
 }
 
-function SidebarNav({ userRole }: { userRole: string}) {
+function SidebarNav() {
   return (
     <nav className="flex flex-col gap-2 px-2">
       {navItems.map((item) => (
-        <NavLink key={item.href} {...item} userRole={userRole} />
+        <NavLink key={item.href} {...item} />
       ))}
     </nav>
   );
 }
 
 export function MainLayout({ children }: { children: React.ReactNode }) {
-  const { user, loading, logout } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login');
-    }
-  }, [user, loading, router]);
-
-
-  if (loading || !user) {
-    return (
-        <div className="flex items-center justify-center min-h-screen">
-            <Sprout className="h-8 w-8 text-primary animate-pulse" />
-        </div>
-    )
-  }
-
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
@@ -94,7 +58,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
             <Logo />
           </div>
           <div className="flex-1 py-2">
-            <SidebarNav userRole={user.role} />
+            <SidebarNav />
           </div>
         </div>
       </div>
@@ -116,34 +80,12 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                   <div className="flex h-14 items-center border-b mb-4">
                     <Logo />
                   </div>
-                  <SidebarNav userRole={user.role} />
+                  <SidebarNav />
                 </SheetContent>
               </Sheet>
             </div>
-            <div className="hidden md:block">
+            <div className="flex-1 flex justify-start">
                  <Logo />
-            </div>
-
-            <div className="flex-1 flex justify-end">
-                 <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="secondary" size="icon" className="rounded-full">
-                            <User className="h-5 w-5" />
-                            <span className="sr-only">Toggle user menu</span>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem disabled>{user.email}</DropdownMenuItem>
-                         <DropdownMenuItem disabled className="capitalize text-xs text-muted-foreground pl-8 -mt-1">{user.role}</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={logout}>
-                            <LogOut className="mr-2 h-4 w-4" />
-                            <span>Log out</span>
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
             </div>
         </header>
         <main className="flex flex-1 flex-col gap-4 bg-background">

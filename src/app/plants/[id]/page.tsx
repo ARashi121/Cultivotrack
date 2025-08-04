@@ -26,7 +26,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { PlusCircle, Calendar, Microscope, FlaskConical, Beaker, FileText, CheckCircle, XCircle, Clock, Dna } from 'lucide-react';
 import { useState } from 'react';
 import { format } from 'date-fns';
-import { useAuth } from '@/hooks/use-auth';
 
 export default function PlantDetailPage() {
   const params = useParams();
@@ -34,7 +33,6 @@ export default function PlantDetailPage() {
   const [isSubcultureDialogOpen, setIsSubcultureDialogOpen] = useState(false);
   const [isExperimentDialogOpen, setIsExperimentDialogOpen] = useState(false);
   const [isExperimentSubcultureDialogOpen, setIsExperimentSubcultureDialogOpen] = useState(false);
-  const { user } = useAuth();
 
 
   if (!plant) {

@@ -1,6 +1,4 @@
 import { z } from 'zod';
-import type { FirebaseApp } from 'firebase/app';
-import type { Auth, User as FirebaseUser } from 'firebase/auth';
 
 export type PlantType = 'tc' | 'development';
 
@@ -78,20 +76,3 @@ export const ParsedSubcultureRecordSchema = z.object({
     notes: z.string().optional().describe("Any notes associated with the event."),
 });
 export type ParsedSubcultureRecord = z.infer<typeof ParsedSubcultureRecordSchema>;
-
-// Auth Types
-export type UserRole = 'admin' | 'technician' | 'viewer';
-
-export interface User {
-  uid: string;
-  email: string;
-  role: UserRole;
-}
-
-export interface AuthContextType {
-  user: User | null;
-  loading: boolean;
-  signup: (email: string, pass: string) => Promise<void>;
-  login: (email: string, pass: string) => Promise<void>;
-  logout: () => Promise<void>;
-}
