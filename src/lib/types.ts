@@ -66,6 +66,18 @@ export interface AnalysisResult {
   confidence: number;
 }
 
+// A more flexible schema for the AI to target. All fields are optional strings.
+export const LooseParsedSubcultureRecordSchema = z.object({
+    plantName: z.string().optional(),
+    subcultureDate: z.string().optional(),
+    doneBy: z.string().optional(),
+    jarsUsed: z.string().optional(),
+    contaminatedJars: z.string().optional(),
+    jarsToHardening: z.string().optional(),
+    notes: z.string().optional(),
+});
+export type LooseParsedSubcultureRecord = z.infer<typeof LooseParsedSubcultureRecordSchema>;
+
 export const ParsedSubcultureRecordSchema = z.object({
     plantName: z.string().describe("The name of the plant."),
     subcultureDate: z.string().describe("The date of the subculture in YYYY-MM-DD format."),
