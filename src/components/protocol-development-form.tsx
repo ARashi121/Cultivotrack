@@ -24,7 +24,7 @@ import { useToast } from "@/hooks/use-toast"
 import { getPlants } from "@/lib/mock-data"
 import { cn } from "@/lib/utils"
 import { CalendarIcon, ChevronsUpDown, Check, PlusCircle, Beaker, FlaskConical, ImagePlus, Camera } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "./ui/command"
 
 
@@ -43,7 +43,7 @@ const protocolFormSchema = z.object({
   observationNotes: z.string().optional(),
   experimentalNotes: z.string().optional(),
   status: z.enum(["ongoing", "success", "failed"], { required_error: "You must select a status."}),
-  images: z.any().optional(),
+  images: z.custom<FileList>().optional(),
 }).refine(data => {
     if (data.sterilisationProcedure === 'Other' && !data.customSterilisationProcedure) {
         return false;
@@ -80,6 +80,21 @@ export function ProtocolDevelopmentForm({ plantId, onSuccess }: ProtocolDevelopm
         status: "ongoing",
     },
   })
+  
+  const images = form.watch('images');
+
+  useEffect(() => {
+    if (images && images.length > 0) {
+      const newPreviews = Array.from(images).map(file => URL.createObjectURL(file));
+      setImagePreviews(newPreviews);
+
+      return () => {
+        newPreviews.forEach(url => URL.revokeObjectURL(url));
+      }
+    } else {
+      setImagePreviews([]);
+    }
+  }, [images]);
 
   function onSubmit(data: ProtocolFormValues) {
     console.log(data)
@@ -87,30 +102,12 @@ export function ProtocolDevelopmentForm({ plantId, onSuccess }: ProtocolDevelopm
       title: "Experiment Logged Successfully",
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+          <code className="text-white">{JSON.stringify({...data, images: data.images ? Array.from(data.images).map(f => f.name) : []}, null, 2)}</code>
         </pre>
       ),
     })
     if(onSuccess) {
         onSuccess();
-    }
-  }
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files) {
-        form.setValue("images", files);
-        const newPreviews: string[] = [];
-        Array.from(files).forEach(file => {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                newPreviews.push(reader.result as string);
-                if (newPreviews.length === files.length) {
-                    setImagePreviews(newPreviews);
-                }
-            };
-            reader.readAsDataURL(file);
-        });
     }
   }
 
@@ -308,7 +305,7 @@ export function ProtocolDevelopmentForm({ plantId, onSuccess }: ProtocolDevelopm
             <FormField
                 control={form.control}
                 name="images"
-                render={({ field }) => (
+                render={({ field: { onChange, value, ...rest } }) => (
                     <FormItem>
                     <FormLabel className="flex items-center gap-2"><Camera className="h-4 w-4 text-primary"/>Add Photos</FormLabel>
                     <FormControl>
@@ -317,8 +314,9 @@ export function ProtocolDevelopmentForm({ plantId, onSuccess }: ProtocolDevelopm
                             accept="image/*" 
                             capture="environment"
                             multiple
-                            onChange={handleImageChange} 
+                            onChange={(e) => onChange(e.target.files)}
                             className="file:text-primary file:font-semibold"
+                            {...rest}
                         />
                     </FormControl>
                     <FormMessage />
@@ -371,3 +369,5 @@ export function ProtocolDevelopmentForm({ plantId, onSuccess }: ProtocolDevelopm
     </Form>
   )
 }
+
+    
