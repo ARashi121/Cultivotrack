@@ -25,7 +25,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import { getPlants } from "@/lib/mock-data"
 import { cn } from "@/lib/utils"
-import { CalendarIcon, Check, ChevronsUpDown, ListTodo, PlusCircle, ImagePlus } from "lucide-react"
+import { CalendarIcon, Check, ChevronsUpDown, ListTodo, PlusCircle, ImagePlus, Camera } from "lucide-react"
 import { useState } from "react"
 
 
@@ -407,8 +407,16 @@ export function SubcultureForm({ plantId, onSuccess }: SubcultureFormProps) {
                 name="image"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel className="flex items-center"><ImagePlus className="mr-2 h-4 w-4 text-primary"/>Upload Image</FormLabel>
-                    <FormControl><Input type="file" accept="image/*" onChange={handleImageChange} /></FormControl>
+                    <FormLabel className="flex items-center gap-2"><Camera className="h-4 w-4 text-primary"/>Upload from Gallery / Camera</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="file" 
+                        accept="image/*" 
+                        capture="environment"
+                        onChange={handleImageChange} 
+                        className="file:text-primary file:font-semibold"
+                      />
+                    </FormControl>
                     <FormMessage />
                     </FormItem>
                 )}

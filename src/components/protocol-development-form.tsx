@@ -23,7 +23,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useToast } from "@/hooks/use-toast"
 import { getPlants } from "@/lib/mock-data"
 import { cn } from "@/lib/utils"
-import { CalendarIcon, ChevronsUpDown, Check, PlusCircle, Beaker, FlaskConical, ImagePlus } from "lucide-react"
+import { CalendarIcon, ChevronsUpDown, Check, PlusCircle, Beaker, FlaskConical, ImagePlus, Camera } from "lucide-react"
 import { useState } from "react"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "./ui/command"
 
@@ -290,8 +290,16 @@ export function ProtocolDevelopmentForm({ plantId, onSuccess }: ProtocolDevelopm
                 name="image"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel className="flex items-center"><ImagePlus className="mr-2 h-4 w-4 text-primary"/>Upload Image for Observation</FormLabel>
-                    <FormControl><Input type="file" accept="image/*" onChange={handleImageChange} /></FormControl>
+                    <FormLabel className="flex items-center gap-2"><Camera className="h-4 w-4 text-primary"/>Upload from Gallery / Camera</FormLabel>
+                    <FormControl>
+                        <Input 
+                            type="file" 
+                            accept="image/*" 
+                            capture="environment"
+                            onChange={handleImageChange} 
+                            className="file:text-primary file:font-semibold"
+                        />
+                    </FormControl>
                     <FormMessage />
                     </FormItem>
                 )}
