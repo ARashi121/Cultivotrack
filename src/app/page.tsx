@@ -8,13 +8,15 @@ import { getPlants } from '@/lib/mock-data';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
-import { Filter, PlusCircle, Search, Upload } from 'lucide-react';
+import { Filter, PlusCircle, Search, Upload, LayoutGrid, List } from 'lucide-react';
 import { DateRange } from 'react-day-picker';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { Plant } from '@/lib/types';
 import Link from 'next/link';
 import { SpreadsheetUploadDialog } from '@/components/spreadsheet-upload-dialog';
+import { Table, TableBody, TableHeader, TableRow, TableHead } from '@/components/ui/table';
+import { PlantListItem } from '@/components/plant-list-item';
 
 const allPlants = getPlants().filter(p => p.type === 'tc');
 
@@ -22,6 +24,7 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   const filteredPlants = useMemo(() => {
     let plants = allPlants;
@@ -86,7 +89,7 @@ export default function Home() {
             <div className="relative flex-grow">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                    placeholder="Search by plant name..."
+                    placeholder="Search by plant name or code..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-10 w-full"
@@ -122,6 +125,14 @@ export default function Home() {
                       </div>
                 </PopoverContent>
             </Popover>
+             <div className="flex items-center gap-1 rounded-md border bg-muted p-0.5">
+                <Button variant={viewMode === 'grid' ? 'secondary' : 'ghost'} size="icon" onClick={() => setViewMode('grid')}>
+                    <LayoutGrid className="h-5 w-5" />
+                </Button>
+                <Button variant={viewMode === 'list' ? 'secondary' : 'ghost'} size="icon" onClick={() => setViewMode('list')}>
+                    <List className="h-5 w-5" />
+                </Button>
+            </div>
         </div>
         
         {(searchTerm || dateRange) && (
@@ -133,11 +144,33 @@ export default function Home() {
             </div>
         )}
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div>
           {filteredPlants.length > 0 ? (
-            filteredPlants.map((plant) => (
-                <PlantCard key={plant.id} plant={plant} />
-            ))
+            viewMode === 'grid' ? (
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    {filteredPlants.map((plant) => (
+                        <PlantCard key={plant.id} plant={plant} />
+                    ))}
+                </div>
+            ) : (
+                <div className="border rounded-lg">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className="w-[80px]">Code</TableHead>
+                                <TableHead>Plant Name</TableHead>
+                                <TableHead className="hidden md:table-cell">Last Subculture</TableHead>
+                                <TableHead className="text-right">Actions</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {filteredPlants.map((plant) => (
+                                <PlantListItem key={plant.id} plant={plant} />
+                            ))}
+                        </TableBody>
+                    </Table>
+                </div>
+            )
           ) : (
             <div className="col-span-full text-center py-12 text-muted-foreground">
                 <p className="text-lg font-semibold">No plants found</p>
@@ -149,3 +182,4 @@ export default function Home() {
     </MainLayout>
   );
 }
+
