@@ -8,6 +8,7 @@ export interface SubcultureEvent {
   explantCount: number;
   media: string;
   notes?: string;
+  imageUrl?: string;
   // Fields from form that are not in the base type yet
   jarsUsed?: number;
   contaminatedJars?: number;
@@ -38,7 +39,7 @@ export interface ExperimentObservation {
 }
 
 export interface ProtocolDevelopmentExperiment {
-    id: string;
+    id:string;
     iteration: number;
     inoculationDate: string;
     sterilisationProcedure: string;

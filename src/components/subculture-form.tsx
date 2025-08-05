@@ -25,7 +25,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import { getPlants } from "@/lib/mock-data"
 import { cn } from "@/lib/utils"
-import { CalendarIcon, Check, ChevronsUpDown, ListTodo, PlusCircle } from "lucide-react"
+import { CalendarIcon, Check, ChevronsUpDown, ListTodo, PlusCircle, ImagePlus } from "lucide-react"
 import { useState } from "react"
 
 
@@ -44,6 +44,7 @@ const subcultureFormSchema = z.object({
   notes: z.string().optional(),
   batchId: z.string().optional(),
   usePreset: z.boolean().default(false).optional(),
+  image: z.any().optional(),
 }).refine(data => {
     if (data.mediaType === 'Other' && !data.customMedia) {
         return false;
@@ -70,6 +71,7 @@ interface SubcultureFormProps {
 export function SubcultureForm({ plantId, onSuccess }: SubcultureFormProps) {
   const { toast } = useToast()
   const [useCustomMedia, setUseCustomMedia] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const form = useForm<SubcultureFormValues>({
     resolver: zodResolver(subcultureFormSchema),
@@ -106,6 +108,18 @@ export function SubcultureForm({ plantId, onSuccess }: SubcultureFormProps) {
         setUseCustomMedia(false);
     } else {
         form.setValue("notes", "");
+    }
+  }
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+        form.setValue("image", file);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setImagePreview(reader.result as string);
+        };
+        reader.readAsDataURL(file);
     }
   }
 
@@ -387,6 +401,19 @@ export function SubcultureForm({ plantId, onSuccess }: SubcultureFormProps) {
                     </FormItem>
                 )}
             />
+
+            <FormField
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel className="flex items-center"><ImagePlus className="mr-2 h-4 w-4 text-primary"/>Upload Image</FormLabel>
+                    <FormControl><Input type="file" accept="image/*" onChange={handleImageChange} /></FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+             />
+             {imagePreview && <div className="relative w-full h-48 rounded-lg overflow-hidden border"><img src={imagePreview} alt="Preview" className="w-full h-full object-contain" /></div>}
         </div>
 
         <Button type="submit" className="w-full sm:w-auto" size="lg">
