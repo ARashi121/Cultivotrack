@@ -43,7 +43,7 @@ const protocolFormSchema = z.object({
   observationNotes: z.string().optional(),
   experimentalNotes: z.string().optional(),
   status: z.enum(["ongoing", "success", "failed"], { required_error: "You must select a status."}),
-  image: z.any().optional(),
+  images: z.any().optional(),
 }).refine(data => {
     if (data.sterilisationProcedure === 'Other' && !data.customSterilisationProcedure) {
         return false;
@@ -71,7 +71,7 @@ export function ProtocolDevelopmentForm({ plantId, onSuccess }: ProtocolDevelopm
   const { toast } = useToast()
   const [useCustomSterilisation, setUseCustomSterilisation] = useState(false);
   const [useCustomMedia, setUseCustomMedia] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   const form = useForm<ProtocolFormValues>({
     resolver: zodResolver(protocolFormSchema),
@@ -97,14 +97,20 @@ export function ProtocolDevelopmentForm({ plantId, onSuccess }: ProtocolDevelopm
   }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-        form.setValue("image", file);
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setImagePreview(reader.result as string);
-        };
-        reader.readAsDataURL(file);
+    const files = e.target.files;
+    if (files) {
+        form.setValue("images", files);
+        const newPreviews: string[] = [];
+        Array.from(files).forEach(file => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                newPreviews.push(reader.result as string);
+                if (newPreviews.length === files.length) {
+                    setImagePreviews(newPreviews);
+                }
+            };
+            reader.readAsDataURL(file);
+        });
     }
   }
 
@@ -284,27 +290,6 @@ export function ProtocolDevelopmentForm({ plantId, onSuccess }: ProtocolDevelopm
                     </FormItem>
                 )}
             />
-
-            <FormField
-                control={form.control}
-                name="image"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel className="flex items-center gap-2"><Camera className="h-4 w-4 text-primary"/>Upload from Gallery / Camera</FormLabel>
-                    <FormControl>
-                        <Input 
-                            type="file" 
-                            accept="image/*" 
-                            capture="environment"
-                            onChange={handleImageChange} 
-                            className="file:text-primary file:font-semibold"
-                        />
-                    </FormControl>
-                    <FormMessage />
-                    </FormItem>
-                )}
-             />
-             {imagePreview && <div className="relative w-full h-48 rounded-lg overflow-hidden border"><img src={imagePreview} alt="Preview" className="w-full h-full object-contain" /></div>}
             
              <FormField
                 control={form.control}
@@ -319,6 +304,36 @@ export function ProtocolDevelopmentForm({ plantId, onSuccess }: ProtocolDevelopm
                     </FormItem>
                 )}
             />
+
+            <FormField
+                control={form.control}
+                name="images"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel className="flex items-center gap-2"><Camera className="h-4 w-4 text-primary"/>Add Photos</FormLabel>
+                    <FormControl>
+                        <Input 
+                            type="file" 
+                            accept="image/*" 
+                            capture="environment"
+                            multiple
+                            onChange={handleImageChange} 
+                            className="file:text-primary file:font-semibold"
+                        />
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+             />
+             {imagePreviews.length > 0 && (
+                <div className="flex gap-2 flex-wrap">
+                    {imagePreviews.map((preview, index) => (
+                         <div key={index} className="relative w-24 h-24 rounded-lg overflow-hidden border">
+                            <img src={preview} alt={`Preview ${index + 1}`} className="w-full h-full object-cover" />
+                        </div>
+                    ))}
+                </div>
+            )}
 
              <FormField
                 control={form.control}
