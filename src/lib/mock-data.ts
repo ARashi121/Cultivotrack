@@ -10,8 +10,18 @@ const mockPlants: Plant[] = [
     photoUrl: 'https://placehold.co/600x400.png',
     type: 'tc',
     subcultureHistory: [
-      { id: 's1', date: '2024-07-15', explantCount: 30, media: 'MS Media' },
-      { id: 's2', date: '2024-06-15', explantCount: 25, media: 'MS Media' },
+      { id: 's1-1', date: '2024-09-06', explantCount: 26, media: '1/2 MS B1N.1', notes: 'Done by Bharti. 9 contaminated jars.' },
+      { id: 's1-2', date: '2024-09-06', explantCount: 26, media: '1/2 MS K1N.1', notes: 'Done by Bharti. 9 contaminated jars.' },
+      { id: 's1-3', date: '2024-09-06', explantCount: 26, media: '1/3 MS K.5N.1', notes: 'Done by Bharti. 9 contaminated jars.' },
+      { id: 's2', date: '2024-09-27', explantCount: 10, media: 'BN.1 S', notes: 'Done by RA.' },
+      { id: 's3', date: '2024-10-29', explantCount: 4, media: 'BN.1', notes: 'Done by Bh.' },
+      { id: 's4', date: '2024-11-04', explantCount: 11, media: 'BN.1', notes: 'Done by Bh.' },
+      { id: 's5', date: '2024-11-18', explantCount: 11, media: 'BN.1', notes: 'Done by Bh.' },
+      { id: 's6', date: '2024-12-10', explantCount: 7, media: 'KI', notes: 'Done by RA.' },
+      { id: 's7', date: '2024-12-23', explantCount: 7, media: 'KI', notes: 'Done by RA.' },
+      { id: 's8', date: '2025-01-11', explantCount: 8, media: 'KI', notes: 'Done by ND.' },
+      { id: 's9', date: '2025-02-01', explantCount: 8, media: 'KI', notes: 'Done by ND.' },
+      { id: 's10', date: '2025-05-08', explantCount: 14, media: '1 1/2, 1/2k.5N.1', notes: 'Done by RA.' }
     ],
   },
   {
@@ -469,8 +479,71 @@ const mockPlants: Plant[] = [
     photoUrl: 'https://placehold.co/600x400.png',
     type: 'tc',
     subcultureHistory: [],
+  },
+  {
+    id: 'dev-1',
+    code: 'PD-1',
+    name: 'Anubias Nana "Petite"',
+    scientificName: 'Anubias barteri var. nana "Petite"',
+    description: 'A miniature version of Anubias nana, perfect for nano tanks. Slow-growing and requires low light. Under protocol development to optimize growth rate.',
+    photoUrl: 'https://placehold.co/600x400.png',
+    type: 'development',
+    subcultureHistory: [],
+    protocolExperiments: [
+        {
+            id: 'exp1',
+            iteration: 1,
+            inoculationDate: '2024-07-01',
+            sterilisationProcedure: '10% Bleach solution for 10 mins',
+            inoculationMedia: 'MS Media + 1mg/L BAP',
+            status: 'ongoing',
+            notes: 'Initial experiment to test the effect of BAP on shoot proliferation.',
+            observations: [
+                { id: 'obs1', date: '2024-07-15', observation: 'callus', notes: 'Callus formation observed at the base of the explant.' },
+                { id: 'obs2', date: '2024-07-30', observation: 'shoot', notes: 'First tiny shoot emerged.' },
+            ],
+            subcultures: [
+                {id: 'sc1', date: '2024-07-30', explantCount: 5, media: 'MS Media + 1mg/L BAP' }
+            ]
+        }
+    ]
+  },
+  {
+    id: 'dev-2',
+    code: 'PD-2',
+    name: 'Rotala "Vietnam H\'ra"',
+    scientificName: 'Rotala rotundifolia "Vietnam H\'ra"',
+    description: 'A colorful stem plant that requires specific nutrient conditions to achieve its vibrant red and orange hues. Protocol development is focused on nutrient and light requirements.',
+    photoUrl: 'https://placehold.co/600x400.png',
+    type: 'development',
+    subcultureHistory: [],
+    protocolExperiments: [
+        {
+            id: 'exp2',
+            iteration: 1,
+            inoculationDate: '2024-06-20',
+            sterilisationProcedure: '70% Ethanol for 1 min',
+            inoculationMedia: 'MS Media + High Iron',
+            status: 'success',
+            notes: 'Experiment to determine if high iron content improves red coloration. Results were positive.',
+            observations: [
+                { id: 'obs3', date: '2024-07-05', observation: 'shoot', notes: 'Rapid shoot elongation.' },
+                { id: 'obs4', date: '2024-07-20', observation: 'other', notes: 'Intensified red coloration observed in new leaves.' },
+            ]
+        },
+        {
+            id: 'exp3',
+            iteration: 2,
+            inoculationDate: '2024-08-01',
+            sterilisationProcedure: '70% Ethanol for 1 min',
+            inoculationMedia: 'MS Media + High Iron + Low Nitrates',
+            status: 'ongoing',
+            notes: 'Second iteration to test the effect of nitrate limitation in combination with high iron.',
+            observations: []
+        }
+    ]
   }
-];
+].sort((a, b) => a.scientificName.localeCompare(b.scientificName));
 
 
 const mockHardeningData: HardeningEvent[] = [
