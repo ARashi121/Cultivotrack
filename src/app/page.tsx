@@ -72,14 +72,10 @@ export default function Home() {
             TC Plants
           </h1>
           <div className="flex items-center space-x-2">
-            <Button variant="outline" onClick={() => setIsUploadDialogOpen(true)}>
-                <Upload className="mr-2 h-4 w-4" />
-                Import from Sheet
-            </Button>
-            <Link href="/subculture/new">
+            <Link href="/plants/new">
                 <Button>
                     <PlusCircle className="mr-2 h-4 w-4" />
-                    New Subculture
+                    New Plant
                 </Button>
             </Link>
           </div>
@@ -143,17 +139,39 @@ export default function Home() {
                 <Button variant="ghost" size="sm" onClick={clearFilters} className="text-primary hover:text-primary">Clear all</Button>
             </div>
         )}
+        
+        <div className="border rounded-lg p-4">
+             <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold font-headline">Manage Subcultures</h2>
+                 <div className="flex items-center space-x-2">
+                    <Button variant="outline" onClick={() => setIsUploadDialogOpen(true)}>
+                        <Upload className="mr-2 h-4 w-4" />
+                        Import from Sheet
+                    </Button>
+                    <Link href="/subculture/new">
+                        <Button>
+                            <PlusCircle className="mr-2 h-4 w-4" />
+                            New Subculture
+                        </Button>
+                    </Link>
+                </div>
+            </div>
+             <p className="text-sm text-muted-foreground">
+                Import subculture data from a spreadsheet or log a new event individually.
+            </p>
+        </div>
+
 
         <div>
           {filteredPlants.length > 0 ? (
             viewMode === 'grid' ? (
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
                     {filteredPlants.map((plant) => (
                         <PlantCard key={plant.id} plant={plant} />
                     ))}
                 </div>
             ) : (
-                <div className="border rounded-lg">
+                <div className="border rounded-lg mt-6">
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -182,4 +200,3 @@ export default function Home() {
     </MainLayout>
   );
 }
-

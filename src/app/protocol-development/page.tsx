@@ -8,11 +8,12 @@ import { getPlants } from '@/lib/mock-data';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
-import { Filter, Search } from 'lucide-react';
+import { Filter, PlusCircle, Search } from 'lucide-react';
 import { DateRange } from 'react-day-picker';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { Plant } from '@/lib/types';
+import Link from 'next/link';
 
 export default function ProtocolDevelopmentPage() {
   const allPlants = useMemo(() => getPlants().filter(p => p.type === 'development'), []);
@@ -53,6 +54,12 @@ export default function ProtocolDevelopmentPage() {
           <h1 className="text-3xl font-bold tracking-tight font-headline">
             Protocol Development Plants
           </h1>
+            <Link href="/plants/new">
+                <Button>
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    New Plant
+                </Button>
+            </Link>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
