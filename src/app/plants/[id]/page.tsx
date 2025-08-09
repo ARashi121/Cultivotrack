@@ -23,7 +23,7 @@ import {
 import { SubcultureForm } from '@/components/subculture-form';
 import { ProtocolDevelopmentForm } from '@/components/protocol-development-form';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { PlusCircle, Calendar, Microscope, FlaskConical, Beaker, FileText, CheckCircle, XCircle, Clock, Dna } from 'lucide-react';
+import { PlusCircle, Calendar, Microscope, FlaskConical, Beaker, FileText, CheckCircle, XCircle, Clock, Dna, Image as ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 import { format } from 'date-fns';
 
@@ -135,26 +135,43 @@ export default function PlantDetailPage() {
                           </DialogContent>
                         </Dialog>
 
-                        <Table>
-                          <TableHeader>
-                            <TableRow>
-                              <TableHead>Date</TableHead>
-                              <TableHead>Explants</TableHead>
-                              <TableHead>Media</TableHead>
-                            </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                            {plant.subcultureHistory.length > 0 ? plant.subcultureHistory.map(event => (
-                              <TableRow key={event.id}>
-                                <TableCell>{event.date}</TableCell>
-                                <TableCell>{event.explantCount}</TableCell>
-                                <TableCell><Badge variant="secondary">{event.media}</Badge></TableCell>
-                              </TableRow>
-                            )) : (
-                              <TableRow><TableCell colSpan={3} className="text-center">No subculture history.</TableCell></TableRow>
-                            )}
-                          </TableBody>
-                        </Table>
+                        {plant.subcultureHistory.length > 0 ? (
+                           <Accordion type="single" collapsible className="w-full">
+                              {plant.subcultureHistory.map(event => (
+                                <AccordionItem value={event.id} key={event.id}>
+                                  <AccordionTrigger className="hover:no-underline">
+                                    <div className="grid grid-cols-3 text-left items-center w-full text-sm">
+                                      <span>{format(new Date(event.date), "PPP")}</span>
+                                      <span className="text-center">{event.explantCount} explants</span>
+                                      <span className="text-right"><Badge variant="secondary">{event.media}</Badge></span>
+                                    </div>
+                                  </AccordionTrigger>
+                                  <AccordionContent className="space-y-4 p-2 pl-4 border-l-2 ml-2">
+                                    {event.notes && (
+                                       <div className="flex items-start gap-2 text-sm">
+                                        <FileText className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                                        <p className="italic text-muted-foreground">"{event.notes}"</p>
+                                      </div>
+                                    )}
+                                    {event.imageUrl && (
+                                       <div className="flex items-start gap-2 text-sm">
+                                         <ImageIcon className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                                         <div className="relative w-40 h-40 rounded-md border overflow-hidden">
+                                           <Image src={event.imageUrl} alt="Subculture observation" fill className="object-cover"/>
+                                         </div>
+                                      </div>
+                                    )}
+                                    {!event.notes && !event.imageUrl && (
+                                       <p className="text-sm text-muted-foreground italic text-center">No additional details recorded.</p>
+                                    )}
+                                  </AccordionContent>
+                                </AccordionItem>
+                              ))}
+                           </Accordion>
+                        ) : (
+                          <div className="text-center text-muted-foreground py-4">No subculture history.</div>
+                        )}
+
                       </CardContent>
                     </Card>
                   </TabsContent>
