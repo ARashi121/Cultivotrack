@@ -96,6 +96,8 @@ export function ProtocolDevelopmentForm({ plantId, onSuccess }: ProtocolDevelopm
     }
   }, [images]);
 
+  const fileRef = form.register("images");
+
   function onSubmit(data: ProtocolFormValues) {
     console.log(data)
     toast({
@@ -305,7 +307,7 @@ export function ProtocolDevelopmentForm({ plantId, onSuccess }: ProtocolDevelopm
             <FormField
                 control={form.control}
                 name="images"
-                render={({ field: { onChange, value, ...rest } }) => (
+                render={({ field }) => (
                     <FormItem>
                     <FormLabel className="flex items-center gap-2"><Camera className="h-4 w-4 text-primary"/>Add Photos</FormLabel>
                     <FormControl>
@@ -314,9 +316,8 @@ export function ProtocolDevelopmentForm({ plantId, onSuccess }: ProtocolDevelopm
                             accept="image/*" 
                             capture="environment"
                             multiple
-                            onChange={(e) => onChange(e.target.files)}
                             className="file:text-primary file:font-semibold"
-                            {...rest}
+                            {...fileRef}
                         />
                     </FormControl>
                     <FormMessage />

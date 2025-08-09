@@ -100,6 +100,8 @@ export function SubcultureForm({ plantId, onSuccess }: SubcultureFormProps) {
     }
   }, [images]);
 
+  const fileRef = form.register("images");
+
 
   function onSubmit(data: SubcultureFormValues) {
     console.log(data)
@@ -409,7 +411,7 @@ export function SubcultureForm({ plantId, onSuccess }: SubcultureFormProps) {
             <FormField
                 control={form.control}
                 name="images"
-                render={({ field: { onChange, value, ...rest } }) => (
+                render={({ field }) => (
                     <FormItem>
                     <FormLabel className="flex items-center gap-2"><Camera className="h-4 w-4 text-primary"/>Add Photos</FormLabel>
                     <FormControl>
@@ -418,9 +420,8 @@ export function SubcultureForm({ plantId, onSuccess }: SubcultureFormProps) {
                         accept="image/*" 
                         capture="environment"
                         multiple
-                        onChange={(e) => onChange(e.target.files)}
                         className="file:text-primary file:font-semibold"
-                        {...rest}
+                        {...fileRef}
                       />
                     </FormControl>
                     <FormMessage />
